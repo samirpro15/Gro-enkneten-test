@@ -1,6 +1,6 @@
 {
-  "status": "unknown",
+  "status": "error",
   "available": [],
-  "last_checked": null,
-  "message": "Noch kein Check gelaufen."
+  "message": "Keine Anliegen-Checkboxen gefunden. Die Seite wählt Anliegen vermutlich per JavaScript aus, nicht über ein normales HTML-Formular. -> Skript muss nachjustiert werden.",
+  "last_checked": "2026-09-19T22:30:27.839909+00:00"
 }
