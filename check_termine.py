@@ -128,6 +128,13 @@ def load_concern_form(session: requests.Session):
     """Lädt die Anliegen-Auswahlseite und gibt (action_url, payload, anzahl_checkboxen) zurück."""
     resp = session.get(INDEX_URL, headers=REQUEST_HEADERS, timeout=TIMEOUT)
     resp.raise_for_status()
+
+    # Rohantwort der Anliegen-Seite IMMER sichern (auch wenn wir gleich
+    # einen Fehler werfen), damit wir bei Bedarf sehen können, wie die
+    # Seite tatsächlich aufgebaut ist.
+    with open(DEBUG_HTML_FILE, "w", encoding="utf-8") as f:
+        f.write(resp.text)
+
     soup = BeautifulSoup(resp.text, "html.parser")
 
     form = soup.find("form")
