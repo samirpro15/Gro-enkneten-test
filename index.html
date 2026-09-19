@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10141c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Terminradar">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Terminradar Großenkneten</title>
+<style>
+  :root {
+    --bg: #0c0f16;
+    --panel: #171d28;
+    --panel-2: #1f2733;
+    --line: #2a3342;
+    --text: #eef0f2;
+    --muted: #7c8494;
+    --amber: #f2b134;
+    --amber-dim: #6b5322;
+    --red: #d9534f;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Consolas, monospace;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 28px 20px 40px;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .place {
+    font-size: 20px;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .board {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .board-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .board-row:last-child { border-bottom: none; }
+
+  .status-label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .status-value {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .status-value.frei { color: var(--amber); }
+  .status-value.belegt { color: var(--text); }
+  .status-value.fehler { color: var(--red); }
+  .status-value.lädt { color: var(--muted); }
+
+  .dates {
+    padding: 4px 0 8px;
+  }
+  .date-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+  }
+  .date-row:last-child { border-bottom: none; }
+  .flap {
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: var(--amber);
+    min-width: 92px;
+  }
+  .date-note {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .empty {
+    padding: 26px 20px 30px;
+    text-align: center;
+    color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  a.cta {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--amber);
+    color: #171307;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  a.cta:active { opacity: 0.85; }
+
+  .meta {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    text-align: center;
+  }
+
+  section.info {
+    margin-top: 34px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  section.info h2 {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  section.info p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+    margin: 0 0 12px;
+  }
+  section.info code {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 13px;
+    color: var(--amber);
+    word-break: break-all;
+  }
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 30px 0 26px;
+  }
+  .disclaimer {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    text-align: center;
+    padding-top: 4px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pulse { animation: pulse 2.4s ease-in-out infinite; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="brand">TERMINRADAR</div>
+      <div class="place">Großenkneten</div>
+    </div>
+  </header>
+
+  <div class="board">
+    <div class="board-row">
+      <span class="status-label">Status</span>
+      <span class="status-value lädt" id="status-value">Lädt …</span>
+    </div>
+    <div id="dates-block"></div>
+  </div>
+
+  <a class="cta" href="https://termine.crossing.de/4878781/Appointment/Index/1" target="_blank" rel="noopener">
+    Zur offiziellen Terminseite
+  </a>
+
+  <div class="meta" id="last-checked">Zuletzt geprüft: –</div>
+
+  <div class="divider"></div>
+
+  <section class="info">
+    <h2>Wie das funktioniert</h2>
+    <p>Ein kleines Skript prüft im Hintergrund alle 15 Minuten die offizielle Terminseite der Gemeinde Großenkneten. Diese Seite hier zeigt nur an, was zuletzt gefunden wurde – gebucht wird ausschließlich auf der offiziellen Seite.</p>
+
+    <h2>Push-Benachrichtigungen</h2>
+    <p>Installiere die kostenlose App <strong>ntfy</strong> (iOS App Store / Google Play) und abonniere darin dieses Thema:</p>
+    <p><code id="ntfy-topic">grossenkneten-termine-35a2a9408f</code></p>
+    <p>Sobald ein neuer freier Termin gefunden wird, kommt darüber sofort eine Benachrichtigung – auch wenn diese Seite geschlossen ist.</p>
+
+    <h2>Als App installieren</h2>
+    <p><strong>iPhone:</strong> Seite in Safari öffnen → Teilen-Symbol → „Zum Home-Bildschirm“.</p>
+    <p><strong>Android:</strong> Seite in Chrome öffnen → Menü (⋮) → „App installieren“.</p>
+  </section>
+
+  <div class="disclaimer">
+    Privates Projekt, kein offizielles Angebot der Gemeinde Großenkneten. Bucht nichts automatisch.
+  </div>
+
+</div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+
+  function formatRelativeTime(iso) {
+    if (!iso) return '–';
+    const then = new Date(iso);
+    const diffMs = Date.now() - then.getTime();
+    const mins = Math.round(diffMs / 60000);
+    if (mins < 1) return 'gerade eben';
+    if (mins === 1) return 'vor 1 Minute';
+    if (mins < 60) return `vor ${mins} Minuten`;
+    const hours = Math.round(mins / 60);
+    if (hours === 1) return 'vor 1 Stunde';
+    if (hours < 24) return `vor ${hours} Stunden`;
+    return then.toLocaleString('de-DE');
+  }
+
+  async function loadStatus() {
+    const statusEl = document.getElementById('status-value');
+    const datesBlock = document.getElementById('dates-block');
+    const lastCheckedEl = document.getElementById('last-checked');
+
+    let data;
+    try {
+      const res = await fetch('status.json?t=' + Date.now(), { cache: 'no-store' });
+      data = await res.json();
+    } catch (err) {
+      statusEl.textContent = 'Nicht erreichbar';
+      statusEl.className = 'status-value fehler';
+      datesBlock.innerHTML = '<div class="empty">Status konnte nicht geladen werden. Später erneut versuchen.</div>';
+      return;
+    }
+
+    lastCheckedEl.textContent = 'Zuletzt geprüft: ' + formatRelativeTime(data.last_checked);
+
+    if (data.status === 'error') {
+      statusEl.textContent = 'Technischer Fehler';
+      statusEl.className = 'status-value fehler';
+      datesBlock.innerHTML = `<div class="empty">${data.message || 'Die Terminseite konnte nicht ausgelesen werden.'}</div>`;
+      return;
+    }
+
+    if (data.status === 'unknown' || !data.last_checked) {
+      statusEl.textContent = 'Wartet auf ersten Check';
+      statusEl.className = 'status-value lädt pulse';
+      datesBlock.innerHTML = '<div class="empty">Die erste automatische Prüfung läuft in Kürze.</div>';
+      return;
+    }
+
+    const available = Array.isArray(data.available) ? data.available : [];
+
+    if (available.length === 0) {
+      statusEl.textContent = 'Keine freien Termine';
+      statusEl.className = 'status-value belegt';
+      datesBlock.innerHTML = '<div class="empty">Aktuell nichts frei. Du wirst benachrichtigt, sobald sich das ändert.</div>';
+      return;
+    }
+
+    statusEl.textContent = `${available.length} Termin${available.length === 1 ? '' : 'e'} frei`;
+    statusEl.className = 'status-value frei';
+    datesBlock.innerHTML = '<div class="dates">' +
+      available.map(d => `<div class="date-row"><span class="flap">${d}</span><span class="date-note">frei</span></div>`).join('') +
+      '</div>';
+  }
+
+  loadStatus();
+  setInterval(loadStatus, 60000);
+</script>
+</body>
+</html>
