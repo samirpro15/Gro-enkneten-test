@@ -14,10 +14,10 @@ Seite.
 
 Ablauf:
 1. Seite mit der Anliegen-Auswahl laden.
-2. Formular (Checkboxen + versteckte Felder) automatisch erkennen und
-   ALLE Anliegen auswählen.
-3. Formular absenden und die resultierende Kalender-/Terminansicht
-   nach freien Terminen durchsuchen.
+2. Formular (Mengen-Felder pro Anliegen + versteckte Felder) erkennen
+   und ALLE Anliegen auf Menge 1 setzen.
+3. Formular absenden, danach die Kalender-/Terminansicht
+   (SelectDateAndTime) abrufen und nach freien Terminen durchsuchen.
 4. Ergebnis mit dem letzten bekannten Stand (status.json) vergleichen.
 5. Bei neu aufgetauchten freien Terminen: Push über ntfy.sh senden.
 6. status.json aktualisieren (wird von der GitHub Action committet und
@@ -125,7 +125,13 @@ def resolve_url(action: str | None) -> str:
 
 
 def load_concern_form(session: requests.Session):
-    """Lädt die Anliegen-Auswahlseite und gibt (action_url, payload, anzahl_checkboxen) zurück."""
+    """Lädt die Anliegen-Auswahlseite und gibt (action_url, payload, anzahl_anliegen) zurück.
+
+    Die Seite verwendet KEINE Checkboxen, sondern pro Anliegen ein
+    Mengen-Textfeld <input name="concern-<ID>" value="0"> (Plus-/Minus-
+    Buttons per JavaScript). Für die serverseitige Auswahl reicht es,
+    diese Felder im ganz normal übermittelten Formular auf "1" zu setzen.
+    """
     resp = session.get(INDEX_URL, headers=REQUEST_HEADERS, timeout=TIMEOUT)
     resp.raise_for_status()
 
@@ -137,7 +143,7 @@ def load_concern_form(session: requests.Session):
 
     soup = BeautifulSoup(resp.text, "html.parser")
 
-    form = soup.find("form")
+    form = soup.find("form", {"id": "form-add-concern-items"}) or soup.find("form")
     if form is None:
         raise RuntimeError("Kein <form> auf der Anliegen-Seite gefunden.")
 
@@ -149,13 +155,15 @@ def load_concern_form(session: requests.Session):
         if name:
             payload[name] = hidden.get("value", "")
 
-    checkboxes = form.find_all("input", {"type": "checkbox"})
-    for box in checkboxes:
+    # Alle Mengen-Felder ("concern-<ID>") auf 1 setzen, um alle
+    # verfügbaren Anliegen gleichzeitig auszuwählen.
+    concern_inputs = form.find_all("input", {"name": re.compile(r"^concern-\d+$")})
+    for box in concern_inputs:
         name = box.get("name")
         if name:
-            payload[name] = box.get("value", "true")
+            payload[name] = "1"
 
-    return action_url, payload, len(checkboxes)
+    return action_url, payload, len(concern_inputs)
 
 
 def find_available_dates(html: str) -> list[str]:
@@ -226,27 +234,34 @@ def explicit_no_appointments(html: str) -> bool:
 
 def check_grossenkneten() -> dict:
     session = requests.Session()
-    action_url, payload, n_checkboxes = load_concern_form(session)
+    action_url, payload, n_concerns = load_concern_form(session)
 
-    if n_checkboxes == 0:
+    if n_concerns == 0:
         raise RuntimeError(
-            "Keine Anliegen-Checkboxen gefunden. Die Seite wählt Anliegen "
-            "vermutlich per JavaScript aus, nicht über ein normales "
-            "HTML-Formular. -> Skript muss nachjustiert werden."
+            "Keine Anliegen-Mengenfelder (concern-<ID>) gefunden. Die "
+            "Struktur der Seite hat sich vermutlich erneut geändert. -> "
+            "Skript muss nachjustiert werden."
         )
 
     resp = session.post(action_url, data=payload, headers=REQUEST_HEADERS, timeout=TIMEOUT, allow_redirects=True)
     resp.raise_for_status()
 
-    # Rohantwort für die manuelle Kalibrierung sichern (wird nur bei
-    # Bedarf ausgewertet, kostet aber nichts).
-    with open(DEBUG_HTML_FILE, "w", encoding="utf-8") as f:
-        f.write(resp.text)
+    # Danach die eigentliche Kalenderseite abrufen (entspricht dem Klick
+    # auf "Datum und Zeit auswählen" im Browser), in derselben Session,
+    # damit die zuvor ausgewählten Anliegen serverseitig erhalten bleiben.
+    calendar_url = f"{BASE_HOST}/{ORG_ID}/Appointment/SelectDateAndTime"
+    calendar_resp = session.get(calendar_url, headers=REQUEST_HEADERS, timeout=TIMEOUT, allow_redirects=True)
+    calendar_resp.raise_for_status()
 
-    if explicit_no_appointments(resp.text):
+    # Rohantwort der Kalenderseite sichern (überschreibt die Anliegen-Seite,
+    # da das für die Kalibrierung der wichtigere Teil ist).
+    with open(DEBUG_HTML_FILE, "w", encoding="utf-8") as f:
+        f.write(calendar_resp.text)
+
+    if explicit_no_appointments(calendar_resp.text):
         return {"status": "ok", "available": []}
 
-    dates = find_available_dates(resp.text)
+    dates = find_available_dates(calendar_resp.text)
     return {"status": "ok", "available": dates}
 
 
