@@ -2,7 +2,6 @@ name: Sehenswürdigkeiten aktualisieren
 
 on:
   schedule:
-    # Einmal pro Woche reicht völlig - Sehenswürdigkeiten ändern sich kaum.
     - cron: "0 3 * * 1"
   workflow_dispatch: {}
 
@@ -27,6 +26,7 @@ jobs:
       - name: Sehenswürdigkeiten abrufen
         env:
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          GOOGLE_PLACES_BROWSER_KEY: ${{ secrets.GOOGLE_PLACES_BROWSER_KEY }}
         run: python fetch_sights.py
 
       - name: sights.json committen (falls geändert)
