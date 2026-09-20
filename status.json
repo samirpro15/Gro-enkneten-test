@@ -4,23 +4,262 @@
       "label": "Großenkneten",
       "url": "https://termine.crossing.de/4878781/Appointment/Index/1",
       "status": "ok",
-      "available": [],
-      "message": ""
+      "concerns": {
+        "Alle Anliegen": {
+          "status": "ok",
+          "available": []
+        }
+      }
     },
     "wildeshausen": {
       "label": "Wildeshausen",
       "url": "https://onlinetermine.wildeshausen.de/select2?md=1",
       "status": "error",
-      "available": [],
-      "message": "Konnte die Anliegen-Auswahlfelder auf der TEVIS-Seite (Schritt 2 von 6) noch nicht automatisch erkennen - vermutlich läuft die Auswahl komplett über JavaScript/AJAX-Aufrufe statt über normale Formularfelder. Braucht eine gezielte Nachjustierung anhand der gespeicherten Debug-Datei (debug_wildeshausen.html)."
+      "concerns": {
+        "Anmeldung aus dem Inland": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Anmeldung aus dem Ausland": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Ummeldung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Abmeldung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Meldebescheinigung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Erweiterte Meldebescheinigung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Haushaltsbescheinigung (Kindergeld)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Lebendbescheinigung (Rente)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Personalausweis beantragen": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Reisepass beantragen": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Abholung Personalausweis/Reisepass": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "ONLINE Funktion aktivieren / PIN neu setzen": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Wohnortänderung im Reisepass": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Befreiung von der Ausweispflicht": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Steueridentifikationsnummer": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Führungszeugnis": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Erweitertes Führungszeugnis": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Auszug aus dem Gewerbezentralregister": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Untersuchungsberechtigungsschein": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Auskunft aus dem Melderegister (Privat)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Auskunft aus dem Melderegister (Gewerblich)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Internationale Eheurkunde einreichen (oder anderen standesamtlichen Nachweis)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Beglaubigung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        }
+      }
     },
     "oldenburg": {
       "label": "Oldenburg",
       "url": "https://terminvereinbarung.oldenburg.de/select2?md=1",
       "status": "error",
-      "available": [],
-      "message": "Konnte die Anliegen-Auswahlfelder auf der TEVIS-Seite (Schritt 2 von 6) noch nicht automatisch erkennen - vermutlich läuft die Auswahl komplett über JavaScript/AJAX-Aufrufe statt über normale Formularfelder. Braucht eine gezielte Nachjustierung anhand der gespeicherten Debug-Datei (debug_oldenburg.html)."
+      "concerns": {
+        "Abmeldung des Wohnsitzes": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Anmeldung bei Zuzug aus dem Ausland": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Anmeldung bei Zuzug aus dem Inland": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Beantragung eID-Karte für Unionsbürger": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Personalausweis": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Reisepass": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Ummeldung innerhalb von Oldenburg": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Vorläufige Dokumente": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Änderungen (Kfz)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Ausfuhrkennzeichen (Export)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Import / Oldtimer / Wohnmobile": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Kfz-Anmeldung/ Umschreibung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Kfz-Abmeldung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Kurzzeitkennzeichen": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Großkunde / Händler": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Verlust Zulassungsbescheinigung Teil II (Fahrzeugbrief)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Verlust Zulassungsbescheinigung Teil I (Fahrzeugschein)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Verlust/Diebstahl Kennzeichen": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Anmeldung/Umschreibung - finanzierte o. geleaste Fahrzeuge": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Amtliche Beglaubigungen": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Führungszeugnis": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Gewerbezentralregister": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Melde-/Haushalts-/Lebens-Bescheinigung": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        },
+        "Sonstiges (Auskünfte, Steuer-ID, Untersuchungsberechtigungsschein)": {
+          "status": "error",
+          "available": [],
+          "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung."
+        }
+      }
     }
   },
-  "last_checked": "2026-09-20T09:41:46.599994+00:00"
+  "last_checked": "2026-09-20T10:07:34.611974+00:00"
 }
