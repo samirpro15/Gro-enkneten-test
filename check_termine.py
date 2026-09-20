@@ -173,8 +173,8 @@ def check_grossenkneten() -> dict:
     save_debug("grossenkneten", cal_resp.text)
 
     if explicit_no_appointments(cal_resp.text):
-        return {"available": []}
-    return {"available": find_available_dates(cal_resp.text)}
+        return {"concerns": {"Alle Anliegen": {"status": "ok", "available": []}}}
+    return {"concerns": {"Alle Anliegen": {"status": "ok", "available": find_available_dates(cal_resp.text)}}}
 
 
 # ---------------------------------------------------------------------------
@@ -182,64 +182,129 @@ def check_grossenkneten() -> dict:
 # ---------------------------------------------------------------------------
 #
 # TEVIS ist ein mehrstufiger Assistent (Schritt 1-6: Behörde -> Anliegen ->
-# Termin -> persönliche Daten -> Übersicht -> Bestätigung). Diese erste
-# Version versucht die Anliegen-Felder generisch zu erkennen; falls das
-# (noch) nicht zuverlässig klappt, wird das als "technischer Fehler"
-# gemeldet und die rohe Seite als Debug-Artifact gespeichert, damit die
-# Logik gezielt nachjustiert werden kann - genau wie zuvor bei
-# Großenkneten.
+# ggf. Standort -> Termin -> persönliche Daten -> Bestätigung). Jedes
+# Anliegen hat ein Mengen-Feld namens "cnc-<ID>" (Typ number) sowie
+# optional zugehörige Dokument-Bestätigungs-Checkboxen namens
+# "doclist_item_<ID>_<DOKID>". Nach dem Absenden des Formulars (GET auf
+# eine relative URL, meist "location") landet man je nach Anliegen direkt
+# auf der Kalenderseite oder zunächst auf einer Standort-Auswahl.
+#
+# Um die Fehleranfälligkeit bei über 20 unterschiedlichen Anliegen gering
+# zu halten, wird JEDES Anliegen EINZELN geprüft (eigene frische Sitzung),
+# nicht alle gleichzeitig.
+
+from urllib.parse import urljoin  # noqa: E402
+
+
+def discover_tevis_concerns(soup: BeautifulSoup) -> list[dict]:
+    concerns = []
+    number_inputs = soup.find_all("input", {"type": "number", "name": re.compile(r"^cnc-\d+$")})
+    for inp in number_inputs:
+        concern_id = inp["name"].split("-", 1)[1]
+
+        label = None
+        plus_btn = soup.find("button", {"data-field": f"cnc-{concern_id}", "data-type": "plus"})
+        if plus_btn and plus_btn.get("aria-label"):
+            m = re.search(r"Anliegens (.+)$", plus_btn["aria-label"])
+            if m:
+                label = m.group(1).strip()
+        if not label:
+            label = f"Anliegen {concern_id}"
+
+        # Die Dokument-Bestätigungs-Checkboxen stecken NICHT im sichtbaren
+        # Formular, sondern als HTML-Text im Attribut "data-tevis-cncpaper"
+        # des Mengenfelds selbst (wird von TEVIS erst per JavaScript in die
+        # Seite eingefügt, sobald die Menge > 0 gesetzt wird).
+        doc_fields: list[tuple[str, str]] = []
+        cncpaper = inp.get("data-tevis-cncpaper", "")
+        if cncpaper:
+            paper_soup = BeautifulSoup(cncpaper, "html.parser")
+            for cb in paper_soup.find_all("input", {"type": "checkbox"}):
+                if cb.get("name"):
+                    doc_fields.append((cb["name"], cb.get("value", "on")))
+
+        concerns.append({"id": concern_id, "label": label, "doc_fields": doc_fields})
+    return concerns
+
+
+def looks_like_location_chooser(html: str) -> bool:
+    lowered = html.lower()
+    return ("standort" in lowered and "auswahl" in lowered) or "bürgerbüro" in lowered.replace("ü", "ü")
+
 
 def check_tevis(key: str, select2_url: str) -> dict:
-    session = requests.Session()
+    """Prüft eine TEVIS-Terminseite, Anliegen für Anliegen, und liefert für
+    jedes Anliegen eine eigene Verfügbarkeits-Liste zurück."""
 
-    resp = session.get(select2_url, headers=REQUEST_HEADERS, timeout=TIMEOUT)
+    probe_session = requests.Session()
+    resp = probe_session.get(select2_url, headers=REQUEST_HEADERS, timeout=TIMEOUT)
     resp.raise_for_status()
     save_debug(key, resp.text)
 
     soup = BeautifulSoup(resp.text, "html.parser")
-    form = soup.find("form")
+    form = soup.find("form", {"id": "cnc-select-form"}) or soup.find("form")
     if form is None:
-        raise RuntimeError("Kein <form> auf der Anliegen-Seite gefunden (Schritt 2 von 6).")
+        raise RuntimeError("Kein Anliegen-Formular gefunden (Schritt 2 von 6).")
 
-    candidate_inputs = form.find_all("input", {"type": re.compile(r"^(number|text|checkbox|radio)$")})
-    concern_like = [
-        inp for inp in candidate_inputs
-        if inp.get("name") and re.search(r"concern|anliegen|item|leistung", inp.get("name", ""), re.I)
-    ]
-
-    if not concern_like:
-        raise RuntimeError(
-            "Konnte die Anliegen-Auswahlfelder auf der TEVIS-Seite (Schritt 2 "
-            "von 6) noch nicht automatisch erkennen - vermutlich läuft die "
-            "Auswahl komplett über JavaScript/AJAX-Aufrufe statt über normale "
-            "Formularfelder. Braucht eine gezielte Nachjustierung anhand der "
-            f"gespeicherten Debug-Datei ({debug_file_for(key)})."
-        )
-
-    payload: dict[str, str] = {}
+    base_hidden: dict[str, str] = {}
     for hidden in form.find_all("input", {"type": "hidden"}):
         name = hidden.get("name")
         if name:
-            payload[name] = hidden.get("value", "")
-    for inp in concern_like:
-        name = inp.get("name")
-        if inp.get("type") in ("checkbox", "radio"):
-            payload[name] = inp.get("value", "true")
-        else:
-            payload[name] = "1"
+            base_hidden[name] = hidden.get("value", "")
 
-    action = form.get("action") or select2_url
-    if not action.startswith("http"):
-        from urllib.parse import urljoin
-        action = urljoin(select2_url, action)
+    concerns = discover_tevis_concerns(soup)
+    if not concerns:
+        raise RuntimeError(
+            "Konnte die Anliegen-Mengenfelder (cnc-<ID>) nicht finden. Die "
+            "Struktur der Seite hat sich vermutlich geändert."
+        )
 
-    resp2 = session.post(action, data=payload, headers=REQUEST_HEADERS, timeout=TIMEOUT, allow_redirects=True)
-    resp2.raise_for_status()
-    save_debug(key, resp2.text)
+    action = form.get("action") or "location"
+    action_url = urljoin(select2_url, action)
 
-    if explicit_no_appointments(resp2.text):
-        return {"available": []}
-    return {"available": find_available_dates(resp2.text)}
+    per_concern: dict[str, dict] = {}
+    all_ids = [c["id"] for c in concerns]
+    first_error_debug_saved = False
+
+    for concern in concerns:
+        payload = dict(base_hidden)
+        for other_id in all_ids:
+            payload[f"cnc-{other_id}"] = "0"
+        payload[f"cnc-{concern['id']}"] = "1"
+        for doc_name, doc_value in concern["doc_fields"]:
+            payload[doc_name] = doc_value
+
+        try:
+            session = requests.Session()
+            # Cookies/Session der ursprünglichen Seite übernehmen, damit
+            # eine eventuelle Server-Sitzung erhalten bleibt.
+            session.cookies.update(probe_session.cookies)
+
+            step_resp = session.get(action_url, params=payload, headers=REQUEST_HEADERS, timeout=TIMEOUT, allow_redirects=True)
+            step_resp.raise_for_status()
+
+            if not first_error_debug_saved:
+                save_debug(key, step_resp.text)
+                first_error_debug_saved = True
+
+            if looks_like_location_chooser(step_resp.text):
+                per_concern[concern["label"]] = {
+                    "status": "error",
+                    "available": [],
+                    "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung.",
+                }
+                continue
+
+            if explicit_no_appointments(step_resp.text):
+                per_concern[concern["label"]] = {"status": "ok", "available": []}
+            else:
+                dates = find_available_dates(step_resp.text)
+                per_concern[concern["label"]] = {"status": "ok", "available": dates}
+
+        except Exception as exc:  # noqa: BLE001
+            per_concern[concern["label"]] = {"status": "error", "available": [], "message": str(exc)}
+
+    return {"concerns": per_concern}
 
 
 def check_wildeshausen() -> dict:
@@ -285,7 +350,7 @@ def load_previous_status() -> dict:
         try:
             with open(STATUS_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                if "sites" in data:
+                if isinstance(data, dict) and "sites" in data:
                     return data
         except (json.JSONDecodeError, OSError):
             pass
@@ -325,37 +390,46 @@ def main() -> None:
         key = site["key"]
         label = site["label"]
         url = site["url"]
-        prev_site = previous_sites.get(key, {"status": "unknown", "available": []})
+        prev_site = previous_sites.get(key, {"status": "unknown", "concerns": {}})
+        prev_concerns = prev_site.get("concerns", {})
 
         try:
             result = site["check"]()
-            available = result["available"]
 
-            previous_available = set(prev_site.get("available", []))
-            new_dates = sorted(set(available) - previous_available)
+            if "concerns" in result:
+                concerns = result["concerns"]
+            else:
+                concerns = {"Termine": {"status": "ok", "available": result.get("available", [])}}
 
-            if new_dates and prev_site.get("status") != "error":
+            all_new_dates: list[str] = []
+            any_error = False
+            for concern_label, concern_data in concerns.items():
+                prev_concern = prev_concerns.get(concern_label, {"status": "unknown", "available": []})
+                available = concern_data.get("available", [])
+                if concern_data.get("status") == "error":
+                    any_error = True
+                    continue
+                prev_available = set(prev_concern.get("available", []))
+                new_dates = sorted(set(available) - prev_available)
+                if new_dates:
+                    all_new_dates.append(f"{concern_label}: " + ", ".join(new_dates))
+
+            if all_new_dates:
                 notify(
                     f"Neuer freier Termin in {label}!",
-                    "Neu verfügbar: " + ", ".join(new_dates) + f"\nJetzt buchen: {url}",
+                    "\n".join(all_new_dates) + f"\nJetzt buchen: {url}",
                     priority="urgent",
                     tags="tada,calendar",
-                )
-            elif new_dates and prev_site.get("status") == "error":
-                notify(
-                    f"Terminradar {label} läuft wieder",
-                    "Freie Termine gefunden: " + ", ".join(new_dates) + f"\n{url}",
-                    priority="default",
                 )
 
             new_sites[key] = {
                 "label": label,
                 "url": url,
-                "status": "ok",
-                "available": available,
-                "message": "",
+                "status": "error" if any_error and all(c.get("status") == "error" for c in concerns.values()) else "ok",
+                "concerns": concerns,
             }
-            print(f"[{key}] OK - {len(available)} Termin(e) gefunden.")
+            ok_count = sum(1 for c in concerns.values() if c.get("status") == "ok")
+            print(f"[{key}] {ok_count}/{len(concerns)} Anliegen erfolgreich geprüft.")
 
         except Exception as exc:  # noqa: BLE001
             error_text = f"{exc}"
@@ -366,7 +440,7 @@ def main() -> None:
                 "label": label,
                 "url": url,
                 "status": "error",
-                "available": prev_site.get("available", []),
+                "concerns": prev_concerns,
                 "message": error_text,
             }
 
@@ -385,7 +459,7 @@ def main() -> None:
     }
     with open(STATUS_FILE, "w", encoding="utf-8") as f:
         json.dump(status_data, f, ensure_ascii=False, indent=2)
-    print("status.json geschrieben:", json.dumps(status_data, ensure_ascii=False))
+    print("status.json geschrieben.")
 
 
 if __name__ == "__main__":
