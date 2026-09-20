@@ -3,287 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0A1416">
+<meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Terminradar">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <title>Terminradar</title>
 <style>
   :root {
-    --bg: #0A1416;
-    --panel: #101B1D;
-    --panel-2: #16262a;
-    --line: #1c2c2e;
-    --text: #DCEDEA;
-    --muted: #5C7A7E;
-    --signal: #3DDC97;
-    --signal-dim: #1c3d33;
-    --amber: #E8B44A;
-    --red: #E8735C;
+    --blue: #0A4C8C;
+    --blue-pale: #EAF2FA;
+    --blue-line: #c7ddf0;
+    --ink: #1a2733;
+    --muted: #6B7280;
+    --muted-2: #9aa4ad;
+    --line: #e2e6ea;
+    --green: #1B8A5A;
+    --amber: #A9760F;
+    --amber-dot: #E0A526;
+    --red: #C0392B;
     box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   * { box-sizing: inherit; }
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  html { height: 100%; }
   body {
     height: 100%;
     margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #fff;
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  .mono { font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Consolas, monospace; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
 
   .wrap {
     max-width: 480px;
     margin: 0 auto;
-    padding: 22px 18px 44px;
+    padding: 20px 18px 44px;
   }
 
-  header {
+  /* ---------- Header ---------- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    min-height: 24px;
+  }
+  .back-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: none;
+    color: var(--blue);
+    font-size: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .back-btn.show { display: flex; }
+  .brand {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 18px;
   }
-  .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--signal);
-    box-shadow: 0 0 8px var(--signal);
-    flex-shrink: 0;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .dot { animation: pulse-dot 2.6s ease-in-out infinite; }
-  }
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; }
-  }
-  .brand {
-    font-size: 11.5px;
-    letter-spacing: 0.14em;
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .brand b { color: var(--text); font-weight: 600; }
+  .flag { display: flex; gap: 2px; }
+  .flag span { width: 4px; height: 12px; }
 
-  /* Stadt-Auswahl (Tabs) */
-  .tabs {
-    display: flex;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 20px;
-    gap: 2px;
+  /* ---------- List view: search + chips ---------- */
+  .search {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--blue-pale); border: 1px solid var(--blue-line); border-radius: 6px;
+    padding: 12px 14px; margin-bottom: 14px;
   }
-  .tab {
-    flex: 1;
-    text-align: center;
-    padding: 12px 4px 11px;
-    font-size: 13px;
-    color: var(--muted);
-    border-bottom: 2px solid transparent;
-    background: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    cursor: pointer;
-    font-family: inherit;
-    -webkit-tap-highlight-color: transparent;
+  .search input {
+    border: none; background: none; outline: none;
+    font-family: inherit; font-size: 14px; width: 100%; color: var(--ink);
   }
-  .tab.active {
-    color: var(--signal);
-    border-bottom-color: var(--signal);
-    font-weight: 600;
-  }
+  .search input::placeholder { color: #7c8b99; }
 
-  .status-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 14px;
+  .chips {
+    display: flex; gap: 6px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 2px;
+    -ms-overflow-style: none; scrollbar-width: none;
   }
-  .status-headline {
-    font-size: 15px;
-    font-weight: 600;
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0; font-size: 12px; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--blue-line); color: var(--blue); white-space: nowrap;
+    background: #fff; font-family: inherit; cursor: pointer;
   }
-  .status-headline.frei { color: var(--signal); }
-  .status-headline.leer { color: var(--text); }
+  .chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  .result-count { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+
+  .town-row {
+    display: flex; align-items: center; gap: 12px; padding: 14px 2px;
+    border-bottom: 1px solid var(--line); cursor: pointer;
+  }
+  .town-row:active { background: #fafbfc; }
+  .ampel { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+  .ampel span { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+  .ampel.gruen span:nth-child(3) { background: var(--green); box-shadow: 0 0 4px rgba(27,138,90,0.5); }
+  .ampel.gelb span:nth-child(2) { background: var(--amber-dot); }
+  .ampel.rot span:nth-child(1) { background: var(--red); }
+
+  .town-info { flex: 1; min-width: 0; }
+  .town-name-line { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .town-name { font-size: 14.5px; font-weight: 600; }
+  .town-when { font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .town-when.gruen { color: var(--green); }
+  .town-when.gelb { color: var(--amber); }
+  .town-when.rot { color: var(--muted-2); }
+  .town-tags { font-size: 11.5px; color: var(--muted); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chev { color: #c2c8ce; flex-shrink: 0; font-size: 15px; }
+
+  .legend {
+    display: flex; gap: 14px; font-size: 10.5px; color: var(--muted);
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
+  }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+  .empty-state { padding: 30px 4px; text-align: center; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+
+  /* ---------- Detail view ---------- */
+  .detail-title { font-size: 19px; font-weight: 700; margin-bottom: 2px; }
+  .detail-plz { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+
+  .status-line { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .status-headline { font-size: 14.5px; font-weight: 600; }
+  .status-headline.frei { color: var(--green); }
+  .status-headline.leer { color: var(--ink); }
   .status-headline.fehler { color: var(--red); }
-  .status-sub {
-    font-size: 11.5px;
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-  }
+  .status-sub { font-size: 11.5px; color: var(--muted); }
 
-  .card {
-    background: var(--panel);
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 14px;
-  }
-  .concern-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 16px;
-    border-bottom: 1px solid var(--panel-2);
-  }
+  .card { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+  .concern-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
   .concern-row:last-child { border-bottom: none; }
-  .concern-name {
-    font-size: 13px;
-    color: #a8c4c2;
-    line-height: 1.35;
-  }
-  .time-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: flex-end;
-  }
+  .concern-name { font-size: 13px; color: var(--ink); line-height: 1.35; }
+  .time-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
   a.time-chip {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-    color: var(--signal);
-    background: var(--signal-dim);
-    border-radius: 7px;
-    padding: 5px 9px;
-    text-decoration: none;
-    white-space: nowrap;
-    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-variant-numeric: tabular-nums;
+    color: var(--green); background: #eaf5ef; border-radius: 6px; padding: 5px 9px;
+    text-decoration: none; white-space: nowrap; font-weight: 500;
   }
   a.time-chip:active { opacity: 0.7; }
 
-  .empty {
-    padding: 22px 16px 24px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 13.5px;
-    line-height: 1.5;
-  }
+  .empty { padding: 20px 14px 22px; text-align: center; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
 
-  details.more {
-    margin-bottom: 18px;
-  }
-  details.more summary {
-    font-size: 12.5px;
-    color: var(--muted);
-    cursor: pointer;
-    padding: 4px 2px;
-    list-style: none;
-  }
+  details.more { margin-bottom: 16px; }
+  details.more summary { font-size: 12.5px; color: var(--muted); cursor: pointer; padding: 4px 2px; list-style: none; }
   details.more summary::-webkit-details-marker { display: none; }
-  details.more summary::before {
-    content: "▸ ";
-    color: var(--signal);
-  }
-  details.more[open] summary::before {
-    content: "▾ ";
-  }
-  .more-list {
-    margin-top: 8px;
-    border-top: 1px solid var(--line);
-  }
-  .more-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 9px 2px;
-    border-bottom: 1px solid var(--line);
-    font-size: 12.5px;
-  }
+  details.more summary::before { content: "▸ "; color: var(--blue); }
+  details.more[open] summary::before { content: "▾ "; }
+  .more-list { margin-top: 8px; border-top: 1px solid var(--line); }
+  .more-row { display: flex; justify-content: space-between; padding: 9px 2px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
   .more-row .n { color: var(--muted); }
-  .more-row .s { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+  .more-row .s { color: var(--muted-2); font-size: 11.5px; }
   .more-row .s.err { color: var(--red); }
 
   a.cta {
-    display: block;
-    text-align: center;
-    margin: 4px 0 18px;
-    padding: 13px 16px;
-    border-radius: 10px;
-    background: var(--panel);
-    border: 1px solid var(--panel-2);
-    color: var(--text);
-    text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 500;
+    display: block; text-align: center; margin: 4px 0 6px; padding: 13px 16px;
+    border-radius: 8px; background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 13.5px; font-weight: 600;
   }
-  a.cta:active { opacity: 0.8; }
+  a.cta:active { opacity: 0.85; }
 
-  .meta {
-    font-size: 11px;
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
-    text-align: center;
-    margin-bottom: 4px;
-  }
-
-  .divider {
-    height: 1px;
-    background: var(--line);
-    margin: 30px 0 24px;
-  }
+  .meta { font-size: 11px; color: var(--muted-2); text-align: center; margin: 14px 0 4px; }
+  .divider { height: 1px; background: var(--line); margin: 26px 0 22px; }
 
   section.info h2 {
-    font-size: 11.5px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin: 0 0 10px;
-    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase;
+    margin: 0 0 8px;
   }
-  section.info p {
-    font-size: 13.5px;
-    line-height: 1.6;
-    color: #a8c4c2;
-    margin: 0 0 14px;
-  }
+  section.info p { font-size: 13px; line-height: 1.6; color: #3d4a56; margin: 0 0 14px; }
   section.info code {
-    background: var(--panel);
-    border: 1px solid var(--panel-2);
-    border-radius: 6px;
-    padding: 3px 7px;
-    font-size: 12.5px;
-    color: var(--signal);
-    font-family: 'JetBrains Mono', monospace;
-    word-break: break-all;
+    background: var(--blue-pale); border: 1px solid var(--blue-line); border-radius: 6px;
+    padding: 3px 7px; font-size: 12.5px; color: var(--blue); font-family: 'IBM Plex Mono', monospace; word-break: break-all;
   }
-
-  .disclaimer {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.5;
-    text-align: center;
-    padding-top: 4px;
-  }
+  .disclaimer { font-size: 11px; color: var(--muted-2); line-height: 1.5; text-align: center; }
 
   @media (prefers-reduced-motion: no-preference) {
     .pulse { animation: pulse 2.4s ease-in-out infinite; }
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header>
-    <span class="dot"></span>
-    <span class="brand"><b>TERMINRADAR</b> · LIVE</span>
-  </header>
-
-  <div class="tabs" id="tabs"></div>
+  <div class="topbar">
+    <button class="back-btn" id="back-btn">←</button>
+    <div class="brand"><span class="flag"><span style="background:#000"></span><span style="background:#D00"></span><span style="background:#FFCE00"></span></span> Terminradar</div>
+  </div>
 
   <div id="content"></div>
 
@@ -318,8 +239,93 @@
     });
   }
 
+  // ---------- Statische Zusatzdaten (PLZ, da status.json das nicht liefert) ----------
+  const TOWN_PLZ = {
+    grossenkneten: '26197',
+    wildeshausen: '27793',
+    oldenburg: '26121',
+  };
+
+  const CATEGORIES = ['Ausweis/Pass', 'Meldewesen', 'KFZ', 'Sonstiges'];
+
+  function categorize(concernName) {
+    const n = concernName.toLowerCase();
+    if (/ausweis|reisepass|\bpass\b|eid[- ]?karte/.test(n)) return 'Ausweis/Pass';
+    if (/kfz|kennzeichen|fahrzeug/.test(n)) return 'KFZ';
+    if (/meld|wohnsitz|bescheinigung|beglaubigung|register|urkunde/.test(n)) return 'Meldewesen';
+    return 'Sonstiges';
+  }
+
+  function parseFirstDate(dateStr) {
+    // Erwartet "TT.MM.JJJJ" oder "TT.MM.JJJJ, HH:MM Uhr"
+    const m = dateStr.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+    if (!m) return null;
+    return new Date(parseInt(m[3]), parseInt(m[2]) - 1, parseInt(m[1]));
+  }
+
+  function daysFromNow(date) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return Math.round((d - today) / 86400000);
+  }
+
+  function relativeDayLabel(days) {
+    if (days <= 0) return 'heute';
+    if (days === 1) return 'morgen';
+    if (days < 7) return `in ${days} Tagen`;
+    if (days < 14) return 'in 1 Woche';
+    if (days < 30) return `in ${Math.round(days / 7)} Wochen`;
+    if (days < 60) return 'in 1 Monat';
+    return `in ${Math.round(days / 30)} Monaten`;
+  }
+
+  // ---------- Auswertung pro Stadt: Ampelfarbe + nächster Termin + Tags ----------
+  function evaluateTown(site) {
+    const concerns = site.concerns || {};
+    const labels = Object.keys(concerns);
+    let earliest = null;
+    let earliestConcern = null;
+    const freeConcerns = [];
+    let anyError = false;
+    let anyOk = false;
+
+    labels.forEach(l => {
+      const c = concerns[l];
+      if (c.status === 'error') { anyError = true; return; }
+      anyOk = true;
+      const dates = c.available || [];
+      if (dates.length > 0) {
+        freeConcerns.push(l);
+        dates.forEach(ds => {
+          const d = parseFirstDate(ds);
+          if (d && (!earliest || d < earliest)) { earliest = d; earliestConcern = l; }
+        });
+      }
+    });
+
+    let ampel = 'rot';
+    let whenLabel = 'nichts frei';
+    if (earliest) {
+      const days = daysFromNow(earliest);
+      whenLabel = relativeDayLabel(days);
+      if (days <= 7) ampel = 'gruen';
+      else if (days <= 30) ampel = 'gelb';
+      else ampel = 'rot';
+    } else if (anyError && !anyOk) {
+      whenLabel = 'Fehler';
+    }
+
+    return { ampel, whenLabel, freeConcerns, totalConcerns: labels.length, anyError };
+  }
+
+  // ---------- App-Zustand ----------
   let currentData = null;
-  let activeKey = null;
+  let view = 'list'; // 'list' | 'detail'
+  let selectedTownKey = null;
+  let activeCategory = 'Alle';
+  let searchQuery = '';
 
   function formatRelativeTime(iso) {
     if (!iso) return '–';
@@ -335,31 +341,106 @@
     return then.toLocaleString('de-DE');
   }
 
-  function renderTabs(sites, keys) {
-    const tabsEl = document.getElementById('tabs');
-    tabsEl.innerHTML = keys.map(k => {
-      const site = sites[k];
-      const cls = k === activeKey ? 'tab active' : 'tab';
-      return `<button class="${cls}" data-key="${k}">${site.label}</button>`;
+  // ---------- Listenansicht ----------
+  function renderList() {
+    const sites = currentData.sites || {};
+    let keys = Object.keys(sites);
+
+    const q = searchQuery.trim().toLowerCase();
+    if (q) {
+      keys = keys.filter(k => {
+        const site = sites[k];
+        const plz = TOWN_PLZ[k] || '';
+        return site.label.toLowerCase().includes(q) || plz.includes(q);
+      });
+    }
+
+    if (activeCategory !== 'Alle') {
+      keys = keys.filter(k => {
+        const concerns = sites[k].concerns || {};
+        return Object.keys(concerns).some(l => categorize(l) === activeCategory);
+      });
+    }
+
+    const chipsHtml = ['Alle', ...CATEGORIES].map(cat => {
+      const cls = cat === activeCategory ? 'chip active' : 'chip';
+      return `<button class="${cls}" data-cat="${cat}">${cat}</button>`;
     }).join('');
-    tabsEl.querySelectorAll('.tab').forEach(btn => {
-      btn.addEventListener('click', () => {
-        activeKey = btn.dataset.key;
-        renderAll();
+
+    let rowsHtml = '';
+    if (keys.length === 0) {
+      rowsHtml = `<div class="empty-state">Keine Stadt gefunden${q ? ` für "${q}"` : ''}.</div>`;
+    } else {
+      keys.forEach(k => {
+        const site = sites[k];
+        const ev = evaluateTown(site);
+        const plz = TOWN_PLZ[k] || '';
+        const tagList = (activeCategory === 'Alle' ? ev.freeConcerns : ev.freeConcerns.filter(l => categorize(l) === activeCategory));
+        const tagsText = tagList.length > 0
+          ? tagList.slice(0, 2).join(' · ') + (tagList.length > 2 ? ` +${tagList.length - 2}` : '')
+          : (ev.totalConcerns > 0 ? `${ev.totalConcerns} Anliegen geprüft` : 'Noch keine Daten');
+        rowsHtml += `
+          <div class="town-row" data-key="${k}">
+            <div class="ampel ${ev.ampel}"><span></span><span></span><span></span></div>
+            <div class="town-info">
+              <div class="town-name-line"><span class="town-name">${site.label}</span><span class="town-when ${ev.ampel}">${ev.whenLabel}</span></div>
+              <div class="town-tags">${plz ? plz + ' · ' : ''}${tagsText}</div>
+            </div>
+            <span class="chev">›</span>
+          </div>`;
+      });
+    }
+
+    document.getElementById('content').innerHTML = `
+      <div class="search"><span style="color:#7c8b99">⌕</span><input id="search-input" placeholder="Ort oder PLZ eingeben" value="${searchQuery}"></div>
+      <div class="chips" id="chips">${chipsHtml}</div>
+      <div class="result-count">${keys.length} Stadt${keys.length === 1 ? '' : 'e'}</div>
+      ${rowsHtml}
+      <div class="legend">
+        <span><i style="background:${'#1B8A5A'}"></i>bald frei</span>
+        <span><i style="background:${'#E0A526'}"></i>später frei</span>
+        <span><i style="background:${'#C0392B'}"></i>nichts frei</span>
+      </div>
+    `;
+
+    document.getElementById('back-btn').classList.remove('show');
+
+    const input = document.getElementById('search-input');
+    input.addEventListener('input', (e) => { searchQuery = e.target.value; renderList(); });
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+
+    document.querySelectorAll('#chips .chip').forEach(btn => {
+      btn.addEventListener('click', () => { activeCategory = btn.dataset.cat; renderList(); });
+    });
+    document.querySelectorAll('.town-row').forEach(row => {
+      row.addEventListener('click', () => {
+        selectedTownKey = row.dataset.key;
+        view = 'detail';
+        renderApp();
       });
     });
   }
 
-  function renderContent(site) {
-    const contentEl = document.getElementById('content');
+  // ---------- Detailansicht (eine Stadt) ----------
+  function renderDetail() {
+    const sites = currentData.sites || {};
+    const site = sites[selectedTownKey];
+    const plz = TOWN_PLZ[selectedTownKey] || '';
+
+    if (!site) { view = 'list'; renderApp(); return; }
+
     const concerns = site.concerns || {};
     const labels = Object.keys(concerns);
 
+    let bodyHtml = `<div class="detail-title">${site.label}</div><div class="detail-plz">${plz}</div>`;
+
     if (labels.length === 0) {
-      contentEl.innerHTML = `
+      bodyHtml += `
         <div class="card"><div class="empty pulse">Die erste automatische Prüfung läuft in Kürze.</div></div>
-        <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>
-      `;
+        <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>`;
+      document.getElementById('content').innerHTML = bodyHtml;
+      document.getElementById('back-btn').classList.add('show');
       return;
     }
 
@@ -379,51 +460,56 @@
       headlineClass = 'leer';
     }
 
-    let html = `
+    bodyHtml += `
       <div class="status-line">
         <span class="status-headline ${headlineClass}">${headline}</span>
         <span class="status-sub">${labels.length} geprüft</span>
-      </div>
-    `;
+      </div>`;
 
     if (withDates.length > 0) {
-      html += '<div class="card">';
+      bodyHtml += '<div class="card">';
       withDates.forEach(l => {
         const dates = concerns[l].available;
         const chips = dates.map(d => `<a class="time-chip" href="${site.url}" target="_blank" rel="noopener">${d.split(',')[0]}</a>`).join('');
-        html += `<div class="concern-row"><span class="concern-name">${l}</span><span class="time-chips">${chips}</span></div>`;
+        bodyHtml += `<div class="concern-row"><span class="concern-name">${l}</span><span class="time-chips">${chips}</span></div>`;
       });
-      html += '</div>';
+      bodyHtml += '</div>';
     } else if (errored.length === labels.length) {
-      html += `<div class="card"><div class="empty">Konnte gerade nicht ausgelesen werden. Wird automatisch erneut versucht.</div></div>`;
+      bodyHtml += `<div class="card"><div class="empty">Konnte gerade nicht ausgelesen werden. Wird automatisch erneut versucht.</div></div>`;
     } else {
-      html += `<div class="card"><div class="empty">Aktuell bei keinem geprüften Anliegen etwas frei. Du wirst benachrichtigt, sobald sich das ändert.</div></div>`;
+      bodyHtml += `<div class="card"><div class="empty">Aktuell bei keinem geprüften Anliegen etwas frei. Du wirst benachrichtigt, sobald sich das ändert.</div></div>`;
     }
 
     const restCount = emptyOk.length + errored.length;
     if (restCount > 0 && withDates.length > 0) {
-      html += `<details class="more"><summary>${restCount} weitere geprüfte Anliegen (ohne freie Termine)</summary><div class="more-list">`;
+      bodyHtml += `<details class="more"><summary>${restCount} weitere geprüfte Anliegen (ohne freie Termine)</summary><div class="more-list">`;
       [...emptyOk, ...errored].forEach(l => {
         const isErr = concerns[l].status === 'error';
-        html += `<div class="more-row"><span class="n">${l}</span><span class="s${isErr ? ' err' : ''}">${isErr ? 'Fehler' : 'frei: keine'}</span></div>`;
+        bodyHtml += `<div class="more-row"><span class="n">${l}</span><span class="s${isErr ? ' err' : ''}">${isErr ? 'Fehler' : 'frei: keine'}</span></div>`;
       });
-      html += `</div></details>`;
+      bodyHtml += `</div></details>`;
     }
 
-    html += `<a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>`;
+    bodyHtml += `<a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>`;
 
-    contentEl.innerHTML = html;
+    document.getElementById('content').innerHTML = bodyHtml;
+    document.getElementById('back-btn').classList.add('show');
   }
 
-  function renderAll() {
+  function renderApp() {
     if (!currentData) return;
-    const sites = currentData.sites || {};
-    const keys = Object.keys(sites);
-    if (keys.length === 0) return;
-    if (!activeKey || !sites[activeKey]) activeKey = keys[0];
-    renderTabs(sites, keys);
-    renderContent(sites[activeKey]);
+    if (view === 'detail' && selectedTownKey) {
+      renderDetail();
+    } else {
+      renderList();
+    }
   }
+
+  document.getElementById('back-btn').addEventListener('click', () => {
+    view = 'list';
+    selectedTownKey = null;
+    renderApp();
+  });
 
   async function loadStatus() {
     const lastCheckedEl = document.getElementById('last-checked');
@@ -432,12 +518,12 @@
       const res = await fetch('status.json?t=' + Date.now(), { cache: 'no-store' });
       data = await res.json();
     } catch (err) {
-      document.getElementById('content').innerHTML = '<div class="card"><div class="empty">Status konnte nicht geladen werden. Später erneut versuchen.</div></div>';
+      document.getElementById('content').innerHTML = '<div class="empty-state">Status konnte nicht geladen werden. Später erneut versuchen.</div>';
       return;
     }
     currentData = data;
     lastCheckedEl.textContent = 'Zuletzt geprüft: ' + formatRelativeTime(data.last_checked);
-    renderAll();
+    renderApp();
   }
 
   loadStatus();
