@@ -18,10 +18,12 @@
     --blue: #0A4C8C;
     --blue-pale: #EAF2FA;
     --blue-line: #c7ddf0;
-    --ink: #1a2733;
+    --green-accent: #1B6B4A;
+    --green-pale: #EAF5EE;
+    --ink: #16212c;
     --muted: #6B7280;
-    --muted-2: #9aa4ad;
-    --line: #e2e6ea;
+    --muted-2: #98a3ad;
+    --line: #edf0f2;
     --green: #1B8A5A;
     --amber: #A9760F;
     --amber-dot: #E0A526;
@@ -33,7 +35,7 @@
   body {
     height: 100%;
     margin: 0;
-    background: #fff;
+    background: #fbfcfd;
     color: var(--ink);
     font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -43,8 +45,45 @@
   .wrap {
     max-width: 480px;
     margin: 0 auto;
-    padding: 20px 18px 44px;
+    padding: 20px 18px 90px;
   }
+
+  /* ---------- Bottom navigation ---------- */
+  .bottomnav {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    z-index: 10;
+  }
+  .bottomnav-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    width: 100%;
+    padding: 6px 10px 8px;
+  }
+  .navitem {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 4px;
+    border-radius: 10px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    color: var(--muted-2);
+  }
+  .navitem svg { opacity: 0.55; }
+  .navitem span { font-size: 10.5px; color: inherit; font-weight: 500; }
+  .navitem.active-blue { background: var(--blue-pale); color: var(--blue); }
+  .navitem.active-blue svg { opacity: 1; }
+  .navitem.active-blue span { font-weight: 700; }
+  .navitem.active-green { background: var(--green-pale); color: var(--green-accent); }
+  .navitem.active-green svg { opacity: 1; }
+  .navitem.active-green span { font-weight: 700; }
 
   /* ---------- Header ---------- */
   .topbar {
@@ -82,53 +121,59 @@
   /* ---------- List view: search + chips ---------- */
   .search {
     display: flex; align-items: center; gap: 10px;
-    background: var(--blue-pale); border: 1px solid var(--blue-line); border-radius: 6px;
-    padding: 12px 14px; margin-bottom: 14px;
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 13px 15px; margin-bottom: 16px;
+    box-shadow: 0 1px 2px rgba(16,24,32,0.04);
   }
   .search input {
     border: none; background: none; outline: none;
     font-family: inherit; font-size: 14px; width: 100%; color: var(--ink);
   }
-  .search input::placeholder { color: #7c8b99; }
+  .search input::placeholder { color: var(--muted-2); }
 
   .chips {
-    display: flex; gap: 6px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 2px;
+    display: flex; gap: 7px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 2px;
     -ms-overflow-style: none; scrollbar-width: none;
   }
   .chips::-webkit-scrollbar { display: none; }
   .chip {
-    flex-shrink: 0; font-size: 12px; padding: 6px 12px; border-radius: 999px;
-    border: 1px solid var(--blue-line); color: var(--blue); white-space: nowrap;
+    flex-shrink: 0; font-size: 12px; padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted); white-space: nowrap;
     background: #fff; font-family: inherit; cursor: pointer;
   }
   .chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
 
-  .result-count { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+  .result-count { font-size: 11px; color: var(--muted-2); margin-bottom: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; text-transform: uppercase; }
 
   .town-row {
-    display: flex; align-items: center; gap: 12px; padding: 14px 2px;
-    border-bottom: 1px solid var(--line); cursor: pointer;
+    display: flex; align-items: center; gap: 13px; padding: 15px 16px;
+    border-radius: 14px; margin-bottom: 10px; background: #fff;
+    box-shadow: 0 1px 3px rgba(16,24,32,0.06), 0 1px 2px rgba(16,24,32,0.04);
+    cursor: pointer; border-bottom: none;
   }
   .town-row:active { background: #fafbfc; }
-  .ampel { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
-  .ampel span { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
-  .ampel.gruen span:nth-child(3) { background: var(--green); box-shadow: 0 0 4px rgba(27,138,90,0.5); }
-  .ampel.gelb span:nth-child(2) { background: var(--amber-dot); }
-  .ampel.rot span:nth-child(1) { background: var(--red); }
+  .ampel { flex-shrink: 0; }
+  .ampel span { display: none; }
+  .ampel::before {
+    content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--line);
+  }
+  .ampel.gruen::before { background: var(--green); box-shadow: 0 0 0 4px rgba(27,138,90,0.12); }
+  .ampel.gelb::before { background: var(--amber-dot); box-shadow: 0 0 0 4px rgba(224,165,38,0.12); }
+  .ampel.rot::before { background: var(--red); box-shadow: 0 0 0 4px rgba(192,57,43,0.1); }
 
   .town-info { flex: 1; min-width: 0; }
   .town-name-line { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-  .town-name { font-size: 14.5px; font-weight: 600; }
-  .town-when { font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .town-name { font-size: 14.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .town-when { font-size: 11.5px; font-weight: 700; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; }
   .town-when.gruen { color: var(--green); }
   .town-when.gelb { color: var(--amber); }
   .town-when.rot { color: var(--muted-2); }
-  .town-tags { font-size: 11.5px; color: var(--muted); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .chev { color: #c2c8ce; flex-shrink: 0; font-size: 15px; }
+  .town-tags { font-size: 11.5px; color: var(--muted-2); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chev { color: #c8d0d6; flex-shrink: 0; font-size: 15px; }
 
   .legend {
-    display: flex; gap: 14px; font-size: 10.5px; color: var(--muted);
-    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
+    display: flex; gap: 14px; font-size: 10.5px; color: var(--muted-2);
+    margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line);
   }
   .legend span { display: flex; align-items: center; gap: 4px; }
   .legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
@@ -155,7 +200,7 @@
     border: 1px solid var(--blue-line); color: var(--blue); white-space: nowrap;
     background: #fff; font-family: inherit; cursor: pointer;
   }
-  .sights-chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .sights-chip.active { background: var(--green-accent); color: #fff; border-color: var(--green-accent); }
 
   .featured { border-radius: 14px; overflow: hidden; margin-bottom: 16px; position: relative; height: 150px; display: flex; align-items: flex-end; background-size: cover; background-position: center; }
   .featured-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75), transparent 60%); }
@@ -181,7 +226,7 @@
   .status-headline.fehler { color: var(--red); }
   .status-sub { font-size: 11.5px; color: var(--muted); }
 
-  .card { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+  .card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(16,24,32,0.06), 0 1px 2px rgba(16,24,32,0.04); }
   .concern-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
   .concern-row:last-child { border-bottom: none; }
   .concern-name { font-size: 13px; color: var(--ink); line-height: 1.35; }
@@ -266,6 +311,19 @@
   </div>
 
 </div>
+
+<nav class="bottomnav">
+  <div class="bottomnav-inner">
+    <button class="navitem" id="nav-termine">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11h6M9 15h6"/></svg>
+      <span>Termine</span>
+    </button>
+    <button class="navitem" id="nav-entdecken">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.5l-2 5-5 2 2-5z"/></svg>
+      <span>Entdecken</span>
+    </button>
+  </div>
+</nav>
 
 <script>
   if ('serviceWorker' in navigator) {
@@ -358,12 +416,13 @@
   // ---------- App-Zustand ----------
   let currentData = null;
   let sightsData = null;
-  let view = 'list';
-  let detailTab = 'termine';
+  let mainSection = 'termine'; // 'termine' | 'entdecken'
+  let view = 'list'; // 'list' | 'detail' (pro Bereich)
   let selectedTownKey = null;
   let activeCategory = 'Alle';
   let activeSightsCategory = 'Alle';
   let searchQuery = '';
+  let sightsSearchQuery = '';
 
   function formatRelativeTime(iso) {
     if (!iso) return '–';
@@ -379,8 +438,8 @@
     return then.toLocaleString('de-DE');
   }
 
-  // ---------- Listenansicht ----------
-  function renderList() {
+  // ---------- Bereich: Termine ----------
+  function renderTermineList() {
     const sites = currentData.sites || {};
     let keys = Object.keys(sites);
 
@@ -444,12 +503,12 @@
     document.getElementById('back-btn').classList.remove('show');
 
     const input = document.getElementById('search-input');
-    input.addEventListener('input', (e) => { searchQuery = e.target.value; renderList(); });
+    input.addEventListener('input', (e) => { searchQuery = e.target.value; renderTermineList(); });
     input.focus();
     input.setSelectionRange(input.value.length, input.value.length);
 
     document.querySelectorAll('#chips .chip').forEach(btn => {
-      btn.addEventListener('click', () => { activeCategory = btn.dataset.cat; renderList(); });
+      btn.addEventListener('click', () => { activeCategory = btn.dataset.cat; renderTermineList(); });
     });
     document.querySelectorAll('.town-row').forEach(row => {
       row.addEventListener('click', () => {
@@ -460,35 +519,17 @@
     });
   }
 
-  // ---------- Detailansicht (eine Stadt) ----------
-  function renderDetail() {
+  function renderTermineDetail() {
     const sites = currentData.sites || {};
     const site = sites[selectedTownKey];
     const plz = TOWN_PLZ[selectedTownKey] || '';
-
     if (!site) { view = 'list'; renderApp(); return; }
 
     let html = `<div class="detail-title">${site.label}</div><div class="detail-plz">${plz}</div>`;
-    html += `
-      <div class="subtabs">
-        <button class="subtab ${detailTab === 'termine' ? 'active' : ''}" data-tab="termine">Termine</button>
-        <button class="subtab ${detailTab === 'entdecken' ? 'active' : ''}" data-tab="entdecken">Entdecken</button>
-      </div>`;
-
-    html += detailTab === 'termine' ? renderTermineTab(site) : renderEntdeckenTab(selectedTownKey);
+    html += renderTermineTab(site);
 
     document.getElementById('content').innerHTML = html;
     document.getElementById('back-btn').classList.add('show');
-
-    document.querySelectorAll('.subtab').forEach(btn => {
-      btn.addEventListener('click', () => { detailTab = btn.dataset.tab; renderDetail(); });
-    });
-
-    if (detailTab === 'entdecken') {
-      document.querySelectorAll('.sights-chip').forEach(btn => {
-        btn.addEventListener('click', () => { activeSightsCategory = btn.dataset.cat; renderDetail(); });
-      });
-    }
   }
 
   function renderTermineTab(site) {
@@ -551,6 +592,115 @@
     return html;
   }
 
+  // ---------- Bereich: Entdecken ----------
+  function evaluateTownSights(places) {
+    const byCategory = {};
+    places.forEach(p => {
+      byCategory[p.category] = (byCategory[p.category] || 0) + 1;
+    });
+    const topCategories = Object.entries(byCategory)
+      .sort((a, b) => b[1] - a[1])
+      .map(([cat]) => cat);
+    const bestRated = [...places].sort((a, b) => (b.rating || 0) - (a.rating || 0))[0];
+    return { total: places.length, topCategories, bestRated };
+  }
+
+  function renderEntdeckenList() {
+    if (!sightsData) {
+      document.getElementById('content').innerHTML = `<div class="empty-state pulse">Sehenswürdigkeiten werden geladen …</div>`;
+      document.getElementById('back-btn').classList.remove('show');
+      return;
+    }
+
+    const sites = currentData.sites || {};
+    let keys = Object.keys(sites);
+
+    const q = sightsSearchQuery.trim().toLowerCase();
+    if (q) {
+      keys = keys.filter(k => {
+        const site = sites[k];
+        const plz = TOWN_PLZ[k] || '';
+        return site.label.toLowerCase().includes(q) || plz.includes(q);
+      });
+    }
+
+    if (activeSightsCategory !== 'Alle') {
+      keys = keys.filter(k => (sightsData[k] || []).some(p => p.category === activeSightsCategory));
+    }
+
+    const chipsHtml = ['Alle', ...SIGHTS_CATEGORIES].map(cat => {
+      const cls = cat === activeSightsCategory ? 'sights-chip active' : 'sights-chip';
+      return `<button class="${cls}" data-cat="${cat}">${cat}</button>`;
+    }).join('');
+
+    let rowsHtml = '';
+    if (keys.length === 0) {
+      rowsHtml = `<div class="empty-state">Keine Stadt gefunden${q ? ` für "${q}"` : ''}.</div>`;
+    } else {
+      keys.forEach(k => {
+        const site = sites[k];
+        const places = activeSightsCategory === 'Alle'
+          ? (sightsData[k] || [])
+          : (sightsData[k] || []).filter(p => p.category === activeSightsCategory);
+        const plz = TOWN_PLZ[k] || '';
+        const ev = evaluateTownSights(places);
+        const tagsText = places.length > 0
+          ? ev.topCategories.slice(0, 3).join(' · ')
+          : 'Noch keine Daten';
+        rowsHtml += `
+          <div class="town-row" data-key="${k}">
+            <div class="town-info">
+              <div class="town-name-line"><span class="town-name">${site.label}</span><span class="town-when" style="color:var(--green-accent)">${places.length} Orte</span></div>
+              <div class="town-tags">${plz ? plz + ' · ' : ''}${tagsText}</div>
+            </div>
+            <span class="chev">›</span>
+          </div>`;
+      });
+    }
+
+    document.getElementById('content').innerHTML = `
+      <div class="search"><span style="color:#7c8b99">⌕</span><input id="sights-search-input" placeholder="Ort oder PLZ eingeben" value="${sightsSearchQuery}"></div>
+      <div class="sights-chips" id="sights-list-chips">${chipsHtml}</div>
+      <div class="result-count">${keys.length} Stadt${keys.length === 1 ? '' : 'e'}</div>
+      ${rowsHtml}
+    `;
+
+    document.getElementById('back-btn').classList.remove('show');
+
+    const input = document.getElementById('sights-search-input');
+    input.addEventListener('input', (e) => { sightsSearchQuery = e.target.value; renderEntdeckenList(); });
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+
+    document.querySelectorAll('#sights-list-chips .sights-chip').forEach(btn => {
+      btn.addEventListener('click', () => { activeSightsCategory = btn.dataset.cat; renderEntdeckenList(); });
+    });
+    document.querySelectorAll('.town-row').forEach(row => {
+      row.addEventListener('click', () => {
+        selectedTownKey = row.dataset.key;
+        view = 'detail';
+        renderApp();
+      });
+    });
+  }
+
+  function renderEntdeckenDetail() {
+    const sites = currentData.sites || {};
+    const site = sites[selectedTownKey];
+    const plz = TOWN_PLZ[selectedTownKey] || '';
+    if (!site) { view = 'list'; renderApp(); return; }
+
+    let html = `<div class="detail-title">${site.label}</div><div class="detail-plz">${plz}</div>`;
+    html += renderEntdeckenTab(selectedTownKey);
+
+    document.getElementById('content').innerHTML = html;
+    document.getElementById('back-btn').classList.add('show');
+
+    document.querySelectorAll('.sights-chip').forEach(btn => {
+      btn.addEventListener('click', () => { activeSightsCategory = btn.dataset.cat; renderEntdeckenDetail(); });
+    });
+  }
+
   function renderEntdeckenTab(townKey) {
     if (!sightsData) {
       return `<div class="empty pulse">Sehenswürdigkeiten werden geladen …</div>`;
@@ -605,19 +755,40 @@
     return html;
   }
 
+  // ---------- Hauptsteuerung ----------
   function renderApp() {
     if (!currentData) return;
-    if (view === 'detail' && selectedTownKey) {
-      renderDetail();
+
+    const navTermine = document.getElementById('nav-termine');
+    const navEntdecken = document.getElementById('nav-entdecken');
+    navTermine.classList.toggle('active-blue', mainSection === 'termine');
+    navEntdecken.classList.toggle('active-green', mainSection === 'entdecken');
+
+    if (mainSection === 'termine') {
+      if (view === 'detail' && selectedTownKey) renderTermineDetail();
+      else renderTermineList();
     } else {
-      renderList();
+      if (view === 'detail' && selectedTownKey) renderEntdeckenDetail();
+      else renderEntdeckenList();
     }
   }
+
+  document.getElementById('nav-termine').addEventListener('click', () => {
+    mainSection = 'termine';
+    view = 'list';
+    selectedTownKey = null;
+    renderApp();
+  });
+  document.getElementById('nav-entdecken').addEventListener('click', () => {
+    mainSection = 'entdecken';
+    view = 'list';
+    selectedTownKey = null;
+    renderApp();
+  });
 
   document.getElementById('back-btn').addEventListener('click', () => {
     view = 'list';
     selectedTownKey = null;
-    detailTab = 'termine';
     renderApp();
   });
 
@@ -628,6 +799,7 @@
     } catch (err) {
       sightsData = {};
     }
+    renderApp();
   }
 
   async function loadStatus() {
@@ -645,8 +817,8 @@
     renderApp();
   }
 
-  loadSights().then(() => { if (view === 'detail') renderApp(); });
   loadStatus();
+  loadSights();
   setInterval(loadStatus, 60000);
 </script>
 </body>
