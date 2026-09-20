@@ -1,0 +1,38 @@
+name: Sehenswürdigkeiten aktualisieren
+
+on:
+  schedule:
+    # Einmal pro Woche reicht völlig - Sehenswürdigkeiten ändern sich kaum.
+    - cron: "0 3 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Abhängigkeiten installieren
+        run: pip install requests
+
+      - name: Sehenswürdigkeiten abrufen
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+        run: python fetch_sights.py
+
+      - name: sights.json committen (falls geändert)
+        run: |
+          git config user.name "terminradar-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add sights.json
+          git diff --staged --quiet || git commit -m "Sehenswürdigkeiten aktualisieren [skip ci]"
+          git push
