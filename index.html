@@ -135,9 +135,44 @@
 
   .empty-state { padding: 30px 4px; text-align: center; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
 
-  /* ---------- Detail view ---------- */
+  /* ---------- Detail view: Termine/Entdecken ---------- */
   .detail-title { font-size: 19px; font-weight: 700; margin-bottom: 2px; }
-  .detail-plz { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .detail-plz { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+
+  .subtabs { display: flex; border-bottom: 2px solid var(--line); margin-bottom: 16px; }
+  .subtab {
+    flex: 1; text-align: center; padding: 10px 4px; font-size: 13px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -2px; font-weight: 500;
+    background: none; border-top: none; border-left: none; border-right: none;
+    font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .subtab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 700; }
+
+  .sights-chips { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 2px; -ms-overflow-style: none; scrollbar-width: none; }
+  .sights-chips::-webkit-scrollbar { display: none; }
+  .sights-chip {
+    flex-shrink: 0; font-size: 12px; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--blue-line); color: var(--blue); white-space: nowrap;
+    background: #fff; font-family: inherit; cursor: pointer;
+  }
+  .sights-chip.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  .featured { border-radius: 14px; overflow: hidden; margin-bottom: 16px; position: relative; height: 150px; display: flex; align-items: flex-end; background-size: cover; background-position: center; }
+  .featured-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75), transparent 60%); }
+  .featured-text { position: relative; padding: 14px; color: #fff; }
+  .featured-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; margin-bottom: 3px; }
+  .featured-name { font-size: 16.5px; font-weight: 700; }
+  .featured-meta { font-size: 11.5px; opacity: 0.9; margin-top: 2px; }
+
+  .sights-section-label { font-size: 11px; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; margin: 4px 0 8px; }
+  .sight-item { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); align-items: center; }
+  .sight-item:last-child { border-bottom: none; }
+  .sight-photo { width: 54px; height: 54px; border-radius: 9px; flex-shrink: 0; background-size: cover; background-position: center; background-color: var(--blue-pale); }
+  .sight-name { font-size: 13.5px; font-weight: 600; }
+  .sight-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .sight-star { color: #E0A526; }
+
+  /* ---------- Detail view (Termine-Teil, wie zuvor) ---------- */
 
   .status-line { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
   .status-headline { font-size: 14.5px; font-weight: 600; }
@@ -247,6 +282,7 @@
   };
 
   const CATEGORIES = ['Ausweis/Pass', 'Meldewesen', 'KFZ', 'Sonstiges'];
+  const SIGHTS_CATEGORIES = ['Natur', 'Kultur', 'Gastro', 'Sport'];
 
   function categorize(concernName) {
     const n = concernName.toLowerCase();
@@ -257,7 +293,6 @@
   }
 
   function parseFirstDate(dateStr) {
-    // Erwartet "TT.MM.JJJJ" oder "TT.MM.JJJJ, HH:MM Uhr"
     const m = dateStr.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
     if (!m) return null;
     return new Date(parseInt(m[3]), parseInt(m[2]) - 1, parseInt(m[1]));
@@ -322,9 +357,12 @@
 
   // ---------- App-Zustand ----------
   let currentData = null;
-  let view = 'list'; // 'list' | 'detail'
+  let sightsData = null;
+  let view = 'list';
+  let detailTab = 'termine';
   let selectedTownKey = null;
   let activeCategory = 'Alle';
+  let activeSightsCategory = 'Alle';
   let searchQuery = '';
 
   function formatRelativeTime(iso) {
@@ -430,18 +468,37 @@
 
     if (!site) { view = 'list'; renderApp(); return; }
 
+    let html = `<div class="detail-title">${site.label}</div><div class="detail-plz">${plz}</div>`;
+    html += `
+      <div class="subtabs">
+        <button class="subtab ${detailTab === 'termine' ? 'active' : ''}" data-tab="termine">Termine</button>
+        <button class="subtab ${detailTab === 'entdecken' ? 'active' : ''}" data-tab="entdecken">Entdecken</button>
+      </div>`;
+
+    html += detailTab === 'termine' ? renderTermineTab(site) : renderEntdeckenTab(selectedTownKey);
+
+    document.getElementById('content').innerHTML = html;
+    document.getElementById('back-btn').classList.add('show');
+
+    document.querySelectorAll('.subtab').forEach(btn => {
+      btn.addEventListener('click', () => { detailTab = btn.dataset.tab; renderDetail(); });
+    });
+
+    if (detailTab === 'entdecken') {
+      document.querySelectorAll('.sights-chip').forEach(btn => {
+        btn.addEventListener('click', () => { activeSightsCategory = btn.dataset.cat; renderDetail(); });
+      });
+    }
+  }
+
+  function renderTermineTab(site) {
     const concerns = site.concerns || {};
     const labels = Object.keys(concerns);
 
-    let bodyHtml = `<div class="detail-title">${site.label}</div><div class="detail-plz">${plz}</div>`;
-
     if (labels.length === 0) {
-      bodyHtml += `
+      return `
         <div class="card"><div class="empty pulse">Die erste automatische Prüfung läuft in Kürze.</div></div>
         <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>`;
-      document.getElementById('content').innerHTML = bodyHtml;
-      document.getElementById('back-btn').classList.add('show');
-      return;
     }
 
     const withDates = labels.filter(l => concerns[l].status === 'ok' && (concerns[l].available || []).length > 0);
@@ -460,40 +517,92 @@
       headlineClass = 'leer';
     }
 
-    bodyHtml += `
+    let html = `
       <div class="status-line">
         <span class="status-headline ${headlineClass}">${headline}</span>
         <span class="status-sub">${labels.length} geprüft</span>
       </div>`;
 
     if (withDates.length > 0) {
-      bodyHtml += '<div class="card">';
+      html += '<div class="card">';
       withDates.forEach(l => {
         const dates = concerns[l].available;
         const chips = dates.map(d => `<a class="time-chip" href="${site.url}" target="_blank" rel="noopener">${d.split(',')[0]}</a>`).join('');
-        bodyHtml += `<div class="concern-row"><span class="concern-name">${l}</span><span class="time-chips">${chips}</span></div>`;
+        html += `<div class="concern-row"><span class="concern-name">${l}</span><span class="time-chips">${chips}</span></div>`;
       });
-      bodyHtml += '</div>';
+      html += '</div>';
     } else if (errored.length === labels.length) {
-      bodyHtml += `<div class="card"><div class="empty">Konnte gerade nicht ausgelesen werden. Wird automatisch erneut versucht.</div></div>`;
+      html += `<div class="card"><div class="empty">Konnte gerade nicht ausgelesen werden. Wird automatisch erneut versucht.</div></div>`;
     } else {
-      bodyHtml += `<div class="card"><div class="empty">Aktuell bei keinem geprüften Anliegen etwas frei. Du wirst benachrichtigt, sobald sich das ändert.</div></div>`;
+      html += `<div class="card"><div class="empty">Aktuell bei keinem geprüften Anliegen etwas frei. Du wirst benachrichtigt, sobald sich das ändert.</div></div>`;
     }
 
     const restCount = emptyOk.length + errored.length;
     if (restCount > 0 && withDates.length > 0) {
-      bodyHtml += `<details class="more"><summary>${restCount} weitere geprüfte Anliegen (ohne freie Termine)</summary><div class="more-list">`;
+      html += `<details class="more"><summary>${restCount} weitere geprüfte Anliegen (ohne freie Termine)</summary><div class="more-list">`;
       [...emptyOk, ...errored].forEach(l => {
         const isErr = concerns[l].status === 'error';
-        bodyHtml += `<div class="more-row"><span class="n">${l}</span><span class="s${isErr ? ' err' : ''}">${isErr ? 'Fehler' : 'frei: keine'}</span></div>`;
+        html += `<div class="more-row"><span class="n">${l}</span><span class="s${isErr ? ' err' : ''}">${isErr ? 'Fehler' : 'frei: keine'}</span></div>`;
       });
-      bodyHtml += `</div></details>`;
+      html += `</div></details>`;
     }
 
-    bodyHtml += `<a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>`;
+    html += `<a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>`;
+    return html;
+  }
 
-    document.getElementById('content').innerHTML = bodyHtml;
-    document.getElementById('back-btn').classList.add('show');
+  function renderEntdeckenTab(townKey) {
+    if (!sightsData) {
+      return `<div class="empty pulse">Sehenswürdigkeiten werden geladen …</div>`;
+    }
+    let places = sightsData[townKey] || [];
+
+    const chipsHtml = ['Alle', ...SIGHTS_CATEGORIES].map(cat => {
+      const cls = cat === activeSightsCategory ? 'sights-chip active' : 'sights-chip';
+      return `<button class="${cls}" data-cat="${cat}">${cat}</button>`;
+    }).join('');
+
+    if (places.length === 0) {
+      return `<div class="sights-chips">${chipsHtml}</div><div class="empty">Für diese Stadt sind noch keine Sehenswürdigkeiten hinterlegt.</div>`;
+    }
+
+    const filtered = activeSightsCategory === 'Alle' ? places : places.filter(p => p.category === activeSightsCategory);
+
+    if (filtered.length === 0) {
+      return `<div class="sights-chips">${chipsHtml}</div><div class="empty">Nichts in dieser Kategorie gefunden.</div>`;
+    }
+
+    const featured = filtered[0];
+    const rest = filtered.slice(1);
+
+    const featuredBg = featured.photo_url ? `background-image:url('${featured.photo_url}')` : 'background:linear-gradient(135deg,#4a7c59,#2d5a3d)';
+    let html = `<div class="sights-chips">${chipsHtml}</div>`;
+    html += `
+      <div class="featured" style="${featuredBg}">
+        <div class="featured-overlay"></div>
+        <div class="featured-text">
+          <div class="featured-tag">Top-Tipp · ${featured.category}</div>
+          <div class="featured-name">${featured.name}</div>
+          <div class="featured-meta">${featured.rating ? '★ ' + featured.rating + ' · ' : ''}${featured.distance_km != null ? featured.distance_km + ' km entfernt' : ''}</div>
+        </div>
+      </div>`;
+
+    if (rest.length > 0) {
+      html += `<div class="sights-section-label">Weitere Orte</div>`;
+      rest.forEach(p => {
+        const bg = p.photo_url ? `background-image:url('${p.photo_url}')` : '';
+        html += `
+          <div class="sight-item">
+            <div class="sight-photo" style="${bg}"></div>
+            <div>
+              <div class="sight-name">${p.name}</div>
+              <div class="sight-meta">${p.rating ? `<span class="sight-star">★</span> ${p.rating} · ` : ''}${p.category}${p.distance_km != null ? ' · ' + p.distance_km + ' km' : ''}</div>
+            </div>
+          </div>`;
+      });
+    }
+
+    return html;
   }
 
   function renderApp() {
@@ -508,8 +617,18 @@
   document.getElementById('back-btn').addEventListener('click', () => {
     view = 'list';
     selectedTownKey = null;
+    detailTab = 'termine';
     renderApp();
   });
+
+  async function loadSights() {
+    try {
+      const res = await fetch('sights.json?t=' + Date.now(), { cache: 'no-store' });
+      sightsData = await res.json();
+    } catch (err) {
+      sightsData = {};
+    }
+  }
 
   async function loadStatus() {
     const lastCheckedEl = document.getElementById('last-checked');
@@ -526,6 +645,7 @@
     renderApp();
   }
 
+  loadSights().then(() => { if (view === 'detail') renderApp(); });
   loadStatus();
   setInterval(loadStatus, 60000);
 </script>
