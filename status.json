@@ -1,4 +1,26 @@
 {
-  "sites": {},
-  "last_checked": null
+  "sites": {
+    "grossenkneten": {
+      "label": "Großenkneten",
+      "url": "https://termine.crossing.de/4878781/Appointment/Index/1",
+      "status": "ok",
+      "available": [],
+      "message": ""
+    },
+    "wildeshausen": {
+      "label": "Wildeshausen",
+      "url": "https://onlinetermine.wildeshausen.de/select2?md=1",
+      "status": "error",
+      "available": [],
+      "message": "Konnte die Anliegen-Auswahlfelder auf der TEVIS-Seite (Schritt 2 von 6) noch nicht automatisch erkennen - vermutlich läuft die Auswahl komplett über JavaScript/AJAX-Aufrufe statt über normale Formularfelder. Braucht eine gezielte Nachjustierung anhand der gespeicherten Debug-Datei (debug_wildeshausen.html)."
+    },
+    "oldenburg": {
+      "label": "Oldenburg",
+      "url": "https://terminvereinbarung.oldenburg.de/select2?md=1",
+      "status": "error",
+      "available": [],
+      "message": "Konnte die Anliegen-Auswahlfelder auf der TEVIS-Seite (Schritt 2 von 6) noch nicht automatisch erkennen - vermutlich läuft die Auswahl komplett über JavaScript/AJAX-Aufrufe statt über normale Formularfelder. Braucht eine gezielte Nachjustierung anhand der gespeicherten Debug-Datei (debug_oldenburg.html)."
+    }
+  },
+  "last_checked": "2026-09-20T09:41:46.599994+00:00"
 }
