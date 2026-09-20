@@ -227,9 +227,18 @@ def discover_tevis_concerns(soup: BeautifulSoup) -> list[dict]:
     return concerns
 
 
-def looks_like_location_chooser(html: str) -> bool:
-    lowered = html.lower()
-    return ("standort" in lowered and "auswahl" in lowered) or "bürgerbüro" in lowered.replace("ü", "ü")
+TEVIS_NEXT_DATE_PATTERN = re.compile(r"Nächster Termin ab (\d{1,2}\.\d{1,2}\.\d{4}), (\d{1,2}:\d{2}) Uhr")
+
+
+def find_tevis_next_dates(html: str) -> list[str]:
+    """TEVIS zeigt auf der Schritt-3-Seite (Terminvorschläge/Standortauswahl)
+    pro möglichem Standort direkt den nächsten freien Termin als Text an,
+    z. B. 'Nächster Termin ab 21.09.2026, 10:05 Uhr'. Das ist zuverlässiger
+    als die generische Kalender-Heuristik."""
+    soup = BeautifulSoup(html, "html.parser")
+    text = soup.get_text(" ", strip=True)
+    matches = TEVIS_NEXT_DATE_PATTERN.findall(text)
+    return sorted({f"{d}, {t} Uhr" for d, t in matches})
 
 
 def check_tevis(key: str, select2_url: str) -> dict:
@@ -287,19 +296,25 @@ def check_tevis(key: str, select2_url: str) -> dict:
                 save_debug(key, step_resp.text)
                 first_error_debug_saved = True
 
-            if looks_like_location_chooser(step_resp.text):
+            tevis_dates = find_tevis_next_dates(step_resp.text)
+            page_text_lower = BeautifulSoup(step_resp.text, "html.parser").get_text(" ", strip=True).lower()
+            advanced_to_step3 = "schritt 3 von 6" in page_text_lower
+
+            if tevis_dates:
+                per_concern[concern["label"]] = {"status": "ok", "available": tevis_dates}
+            elif advanced_to_step3:
+                # Auswahl hat funktioniert (Schritt 3 erreicht), aber kein
+                # "Nächster Termin ab..."-Text gefunden -> vermutlich
+                # tatsächlich nichts frei.
+                per_concern[concern["label"]] = {"status": "ok", "available": []}
+            elif explicit_no_appointments(step_resp.text):
+                per_concern[concern["label"]] = {"status": "ok", "available": []}
+            else:
                 per_concern[concern["label"]] = {
                     "status": "error",
                     "available": [],
-                    "message": "Zeigt eine Standort-Auswahl statt direkt den Kalender - Skript braucht hierfür noch eine Nachjustierung.",
+                    "message": "Anliegen-Auswahl hat nicht wie erwartet zu Schritt 3 (Terminvorschläge) geführt.",
                 }
-                continue
-
-            if explicit_no_appointments(step_resp.text):
-                per_concern[concern["label"]] = {"status": "ok", "available": []}
-            else:
-                dates = find_available_dates(step_resp.text)
-                per_concern[concern["label"]] = {"status": "ok", "available": dates}
 
         except Exception as exc:  # noqa: BLE001
             per_concern[concern["label"]] = {"status": "error", "available": [], "message": str(exc)}
