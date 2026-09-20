@@ -3,24 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#10141c">
+<meta name="theme-color" content="#0A1416">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Terminradar">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <title>Terminradar</title>
 <style>
   :root {
-    --bg: #0c0f16;
-    --panel: #171d28;
-    --panel-2: #1f2733;
-    --line: #2a3342;
-    --text: #eef0f2;
-    --muted: #7c8494;
-    --amber: #f2b134;
-    --amber-dim: #6b5322;
-    --red: #d9534f;
+    --bg: #0A1416;
+    --panel: #101B1D;
+    --panel-2: #16262a;
+    --line: #1c2c2e;
+    --text: #DCEDEA;
+    --muted: #5C7A7E;
+    --signal: #3DDC97;
+    --signal-dim: #1c3d33;
+    --amber: #E8B44A;
+    --red: #E8735C;
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -32,162 +36,230 @@
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Consolas, monospace;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Consolas, monospace; }
+
   .wrap {
     max-width: 480px;
     margin: 0 auto;
-    padding: 28px 20px 40px;
+    padding: 22px 18px 44px;
   }
+
   header {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 22px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 8px var(--signal);
+    flex-shrink: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .dot { animation: pulse-dot 2.6s ease-in-out infinite; }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
   }
   .brand {
-    font-size: 13px;
+    font-size: 11.5px;
     letter-spacing: 0.14em;
     color: var(--muted);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'JetBrains Mono', monospace;
   }
-  .place {
-    font-size: 18px;
-    font-weight: 600;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
+  .brand b { color: var(--text); font-weight: 600; }
 
-  .town {
-    margin-bottom: 26px;
-  }
-  .town-name {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    margin: 0 0 8px;
-  }
-
-  .board {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-
-  .board-row {
+  /* Stadt-Auswahl (Tabs) */
+  .tabs {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 20px;
     border-bottom: 1px solid var(--line);
+    margin-bottom: 20px;
+    gap: 2px;
   }
-  .board-row:last-child { border-bottom: none; }
-
-  .status-label {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .status-value {
-    font-size: 15px;
-    font-weight: 600;
-  }
-  .status-value.frei { color: var(--amber); }
-  .status-value.belegt { color: var(--text); }
-  .status-value.fehler { color: var(--red); }
-  .status-value.lädt { color: var(--muted); }
-
-  .dates {
-    padding: 4px 0 8px;
-  }
-  .date-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--line);
-    background: var(--panel-2);
-  }
-  .date-row:last-child { border-bottom: none; }
-  .flap {
-    font-size: 20px;
-    letter-spacing: 0.04em;
-    color: var(--amber);
-    min-width: 92px;
-  }
-  .date-note {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 4px 11px;
     font-size: 13px;
     color: var(--muted);
+    border-bottom: 2px solid transparent;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab.active {
+    color: var(--signal);
+    border-bottom-color: var(--signal);
+    font-weight: 600;
   }
 
+  .status-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .status-headline {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .status-headline.frei { color: var(--signal); }
+  .status-headline.leer { color: var(--text); }
+  .status-headline.fehler { color: var(--red); }
+  .status-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .card {
+    background: var(--panel);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .concern-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--panel-2);
+  }
+  .concern-row:last-child { border-bottom: none; }
+  .concern-name {
+    font-size: 13px;
+    color: #a8c4c2;
+    line-height: 1.35;
+  }
+  .time-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  a.time-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--signal);
+    background: var(--signal-dim);
+    border-radius: 7px;
+    padding: 5px 9px;
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  a.time-chip:active { opacity: 0.7; }
+
   .empty {
-    padding: 22px 20px 26px;
+    padding: 22px 16px 24px;
     text-align: center;
     color: var(--muted);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.5;
   }
+
+  details.more {
+    margin-bottom: 18px;
+  }
+  details.more summary {
+    font-size: 12.5px;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 2px;
+    list-style: none;
+  }
+  details.more summary::-webkit-details-marker { display: none; }
+  details.more summary::before {
+    content: "▸ ";
+    color: var(--signal);
+  }
+  details.more[open] summary::before {
+    content: "▾ ";
+  }
+  .more-list {
+    margin-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .more-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 2px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12.5px;
+  }
+  .more-row .n { color: var(--muted); }
+  .more-row .s { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+  .more-row .s.err { color: var(--red); }
 
   a.cta {
     display: block;
     text-align: center;
-    margin-top: 10px;
-    padding: 12px 16px;
+    margin: 4px 0 18px;
+    padding: 13px 16px;
     border-radius: 10px;
-    background: var(--amber);
-    color: #171307;
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    color: var(--text);
     text-decoration: none;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 700;
-    font-size: 14px;
+    font-size: 13.5px;
+    font-weight: 500;
   }
-  a.cta:active { opacity: 0.85; }
+  a.cta:active { opacity: 0.8; }
 
   .meta {
-    margin-top: 8px;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     text-align: center;
+    margin-bottom: 4px;
   }
 
-  section.info {
-    margin-top: 30px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  section.info h2 {
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin: 0 0 10px;
-  }
-  section.info p {
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--text);
-    margin: 0 0 12px;
-  }
-  section.info code {
-    background: var(--panel-2);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 2px 6px;
-    font-size: 13px;
-    color: var(--amber);
-    word-break: break-all;
-  }
   .divider {
     height: 1px;
     background: var(--line);
-    margin: 30px 0 26px;
+    margin: 30px 0 24px;
   }
+
+  section.info h2 {
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  section.info p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #a8c4c2;
+    margin: 0 0 14px;
+  }
+  section.info code {
+    background: var(--panel);
+    border: 1px solid var(--panel-2);
+    border-radius: 6px;
+    padding: 3px 7px;
+    font-size: 12.5px;
+    color: var(--signal);
+    font-family: 'JetBrains Mono', monospace;
+    word-break: break-all;
+  }
+
   .disclaimer {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     line-height: 1.5;
     text-align: center;
@@ -199,7 +271,7 @@
   }
   @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.45; }
+    50% { opacity: 0.4; }
   }
 </style>
 </head>
@@ -207,13 +279,13 @@
 <div class="wrap">
 
   <header>
-    <div>
-      <div class="brand">TERMINRADAR</div>
-      <div class="place">Großenkneten · Wildeshausen · Oldenburg</div>
-    </div>
+    <span class="dot"></span>
+    <span class="brand"><b>TERMINRADAR</b> · LIVE</span>
   </header>
 
-  <div id="towns-container"></div>
+  <div class="tabs" id="tabs"></div>
+
+  <div id="content"></div>
 
   <div class="meta" id="last-checked">Zuletzt geprüft: –</div>
 
@@ -221,7 +293,7 @@
 
   <section class="info">
     <h2>Wie das funktioniert</h2>
-    <p>Ein kleines Skript prüft im Hintergrund regelmäßig die offiziellen Terminseiten. Diese Seite hier zeigt nur an, was zuletzt gefunden wurde – gebucht wird ausschließlich auf den offiziellen Seiten.</p>
+    <p>Ein kleines Skript prüft im Hintergrund regelmäßig die offiziellen Terminseiten. Diese Seite hier zeigt nur an, was zuletzt gefunden wurde – gebucht wird ausschließlich auf den offiziellen Seiten. Ein Klick auf eine Uhrzeit bringt dich direkt zur richtigen Terminseite.</p>
 
     <h2>Push-Benachrichtigungen</h2>
     <p>Installiere die kostenlose App <strong>ntfy</strong> (iOS App Store / Google Play) und abonniere darin dieses Thema:</p>
@@ -246,6 +318,9 @@
     });
   }
 
+  let currentData = null;
+  let activeKey = null;
+
   function formatRelativeTime(iso) {
     if (!iso) return '–';
     const then = new Date(iso);
@@ -260,97 +335,109 @@
     return then.toLocaleString('de-DE');
   }
 
-  function renderTown(site) {
+  function renderTabs(sites, keys) {
+    const tabsEl = document.getElementById('tabs');
+    tabsEl.innerHTML = keys.map(k => {
+      const site = sites[k];
+      const cls = k === activeKey ? 'tab active' : 'tab';
+      return `<button class="${cls}" data-key="${k}">${site.label}</button>`;
+    }).join('');
+    tabsEl.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeKey = btn.dataset.key;
+        renderAll();
+      });
+    });
+  }
+
+  function renderContent(site) {
+    const contentEl = document.getElementById('content');
     const concerns = site.concerns || {};
     const labels = Object.keys(concerns);
 
     if (labels.length === 0) {
-      return `
-        <div class="town">
-          <div class="town-name">${site.label}</div>
-          <div class="board"><div class="empty">Noch keine Daten.</div></div>
-          <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>
-        </div>`;
+      contentEl.innerHTML = `
+        <div class="card"><div class="empty pulse">Die erste automatische Prüfung läuft in Kürze.</div></div>
+        <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>
+      `;
+      return;
     }
 
     const withDates = labels.filter(l => concerns[l].status === 'ok' && (concerns[l].available || []).length > 0);
     const errored = labels.filter(l => concerns[l].status === 'error');
     const emptyOk = labels.filter(l => concerns[l].status === 'ok' && (concerns[l].available || []).length === 0);
 
-    let statusText, statusClass;
+    let headline, headlineClass;
     if (withDates.length > 0) {
-      statusText = `${withDates.length} Anliegen mit freien Terminen`;
-      statusClass = 'status-value frei';
+      headline = `${withDates.length} Anliegen mit freien Terminen`;
+      headlineClass = 'frei';
     } else if (errored.length === labels.length) {
-      statusText = 'Technischer Fehler';
-      statusClass = 'status-value fehler';
+      headline = 'Technischer Fehler';
+      headlineClass = 'fehler';
     } else {
-      statusText = 'Keine freien Termine';
-      statusClass = 'status-value belegt';
+      headline = 'Keine freien Termine';
+      headlineClass = 'leer';
     }
 
-    let rowsHtml = '';
-    withDates.forEach(l => {
-      const dates = concerns[l].available;
-      rowsHtml += `<div class="date-row"><span class="flap">${dates.join(', ')}</span><span class="date-note">${l}</span></div>`;
-    });
-
-    let bodyHtml;
-    if (rowsHtml) {
-      bodyHtml = `<div class="dates">${rowsHtml}</div>`;
-    } else if (errored.length === labels.length) {
-      bodyHtml = `<div class="empty">Konnte gerade nicht ausgelesen werden (${errored.length} Anliegen betroffen). Wird automatisch erneut versucht.</div>`;
-    } else {
-      bodyHtml = '<div class="empty">Aktuell bei keinem geprüften Anliegen etwas frei. Du wirst benachrichtigt, sobald sich das ändert.</div>';
-    }
-
-    let footNote = '';
-    if (errored.length > 0 && errored.length < labels.length) {
-      footNote = `<div class="meta">${errored.length} von ${labels.length} Anliegen aktuell nicht auswertbar</div>`;
-    } else if (emptyOk.length > 0 || withDates.length > 0) {
-      footNote = `<div class="meta">${labels.length} Anliegen geprüft</div>`;
-    }
-
-    return `
-      <div class="town">
-        <div class="town-name">${site.label}</div>
-        <div class="board">
-          <div class="board-row">
-            <span class="status-label">Status</span>
-            <span class="${statusClass}">${statusText}</span>
-          </div>
-          ${bodyHtml}
-        </div>
-        ${footNote}
-        <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>
+    let html = `
+      <div class="status-line">
+        <span class="status-headline ${headlineClass}">${headline}</span>
+        <span class="status-sub">${labels.length} geprüft</span>
       </div>
     `;
+
+    if (withDates.length > 0) {
+      html += '<div class="card">';
+      withDates.forEach(l => {
+        const dates = concerns[l].available;
+        const chips = dates.map(d => `<a class="time-chip" href="${site.url}" target="_blank" rel="noopener">${d.split(',')[0]}</a>`).join('');
+        html += `<div class="concern-row"><span class="concern-name">${l}</span><span class="time-chips">${chips}</span></div>`;
+      });
+      html += '</div>';
+    } else if (errored.length === labels.length) {
+      html += `<div class="card"><div class="empty">Konnte gerade nicht ausgelesen werden. Wird automatisch erneut versucht.</div></div>`;
+    } else {
+      html += `<div class="card"><div class="empty">Aktuell bei keinem geprüften Anliegen etwas frei. Du wirst benachrichtigt, sobald sich das ändert.</div></div>`;
+    }
+
+    const restCount = emptyOk.length + errored.length;
+    if (restCount > 0 && withDates.length > 0) {
+      html += `<details class="more"><summary>${restCount} weitere geprüfte Anliegen (ohne freie Termine)</summary><div class="more-list">`;
+      [...emptyOk, ...errored].forEach(l => {
+        const isErr = concerns[l].status === 'error';
+        html += `<div class="more-row"><span class="n">${l}</span><span class="s${isErr ? ' err' : ''}">${isErr ? 'Fehler' : 'frei: keine'}</span></div>`;
+      });
+      html += `</div></details>`;
+    }
+
+    html += `<a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>`;
+
+    contentEl.innerHTML = html;
+  }
+
+  function renderAll() {
+    if (!currentData) return;
+    const sites = currentData.sites || {};
+    const keys = Object.keys(sites);
+    if (keys.length === 0) return;
+    if (!activeKey || !sites[activeKey]) activeKey = keys[0];
+    renderTabs(sites, keys);
+    renderContent(sites[activeKey]);
   }
 
   async function loadStatus() {
-    const container = document.getElementById('towns-container');
     const lastCheckedEl = document.getElementById('last-checked');
-
     let data;
     try {
       const res = await fetch('status.json?t=' + Date.now(), { cache: 'no-store' });
       data = await res.json();
     } catch (err) {
-      container.innerHTML = '<div class="empty">Status konnte nicht geladen werden. Später erneut versuchen.</div>';
+      document.getElementById('content').innerHTML = '<div class="card"><div class="empty">Status konnte nicht geladen werden. Später erneut versuchen.</div></div>';
       return;
     }
-
+    currentData = data;
     lastCheckedEl.textContent = 'Zuletzt geprüft: ' + formatRelativeTime(data.last_checked);
-
-    const sites = data.sites || {};
-    const keys = Object.keys(sites);
-
-    if (keys.length === 0 || !data.last_checked) {
-      container.innerHTML = '<div class="empty pulse">Die erste automatische Prüfung läuft in Kürze.</div>';
-      return;
-    }
-
-    container.innerHTML = keys.map(k => renderTown(sites[k])).join('');
+    renderAll();
   }
 
   loadStatus();
