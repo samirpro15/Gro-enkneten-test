@@ -261,23 +261,54 @@
   }
 
   function renderTown(site) {
-    const available = Array.isArray(site.available) ? site.available : [];
-    let statusText, statusClass, bodyHtml;
+    const concerns = site.concerns || {};
+    const labels = Object.keys(concerns);
 
-    if (site.status === 'error') {
+    if (labels.length === 0) {
+      return `
+        <div class="town">
+          <div class="town-name">${site.label}</div>
+          <div class="board"><div class="empty">Noch keine Daten.</div></div>
+          <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>
+        </div>`;
+    }
+
+    const withDates = labels.filter(l => concerns[l].status === 'ok' && (concerns[l].available || []).length > 0);
+    const errored = labels.filter(l => concerns[l].status === 'error');
+    const emptyOk = labels.filter(l => concerns[l].status === 'ok' && (concerns[l].available || []).length === 0);
+
+    let statusText, statusClass;
+    if (withDates.length > 0) {
+      statusText = `${withDates.length} Anliegen mit freien Terminen`;
+      statusClass = 'status-value frei';
+    } else if (errored.length === labels.length) {
       statusText = 'Technischer Fehler';
       statusClass = 'status-value fehler';
-      bodyHtml = `<div class="empty">${site.message || 'Die Terminseite konnte nicht ausgelesen werden.'}</div>`;
-    } else if (available.length === 0) {
+    } else {
       statusText = 'Keine freien Termine';
       statusClass = 'status-value belegt';
-      bodyHtml = '<div class="empty">Aktuell nichts frei. Du wirst benachrichtigt, sobald sich das ändert.</div>';
+    }
+
+    let rowsHtml = '';
+    withDates.forEach(l => {
+      const dates = concerns[l].available;
+      rowsHtml += `<div class="date-row"><span class="flap">${dates.join(', ')}</span><span class="date-note">${l}</span></div>`;
+    });
+
+    let bodyHtml;
+    if (rowsHtml) {
+      bodyHtml = `<div class="dates">${rowsHtml}</div>`;
+    } else if (errored.length === labels.length) {
+      bodyHtml = `<div class="empty">Konnte gerade nicht ausgelesen werden (${errored.length} Anliegen betroffen). Wird automatisch erneut versucht.</div>`;
     } else {
-      statusText = `${available.length} Termin${available.length === 1 ? '' : 'e'} frei`;
-      statusClass = 'status-value frei';
-      bodyHtml = '<div class="dates">' +
-        available.map(d => `<div class="date-row"><span class="flap">${d}</span><span class="date-note">frei</span></div>`).join('') +
-        '</div>';
+      bodyHtml = '<div class="empty">Aktuell bei keinem geprüften Anliegen etwas frei. Du wirst benachrichtigt, sobald sich das ändert.</div>';
+    }
+
+    let footNote = '';
+    if (errored.length > 0 && errored.length < labels.length) {
+      footNote = `<div class="meta">${errored.length} von ${labels.length} Anliegen aktuell nicht auswertbar</div>`;
+    } else if (emptyOk.length > 0 || withDates.length > 0) {
+      footNote = `<div class="meta">${labels.length} Anliegen geprüft</div>`;
     }
 
     return `
@@ -290,6 +321,7 @@
           </div>
           ${bodyHtml}
         </div>
+        ${footNote}
         <a class="cta" href="${site.url}" target="_blank" rel="noopener">Zur offiziellen Terminseite</a>
       </div>
     `;
