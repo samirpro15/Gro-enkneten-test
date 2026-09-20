@@ -10,7 +10,11 @@ Läuft NICHT alle 15 Minuten wie check_termine.py (Sehenswürdigkeiten
 ändern sich praktisch nie), sondern über einen eigenen, selten laufenden
 Workflow (z. B. einmal pro Woche oder manuell).
 
-Benötigt das GitHub-Secret GOOGLE_PLACES_API_KEY.
+Benötigt zwei GitHub-Secrets:
+  - GOOGLE_PLACES_API_KEY: Server-Key OHNE Website-Einschränkung
+    (für die eigentlichen Suchanfragen).
+  - GOOGLE_PLACES_BROWSER_KEY: Website-eingeschränkter Key
+    (wird in die öffentlich sichtbaren Foto-URLs eingebaut).
 """
 
 from __future__ import annotations
@@ -24,12 +28,8 @@ import time
 import requests
 
 API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY", "")
+BROWSER_API_KEY = os.environ.get("GOOGLE_PLACES_BROWSER_KEY", "") or API_KEY
 SIGHTS_FILE = "sights.json"
-
-# Der Referer muss zur HTTP-Verweis-URL-Einschränkung des API-Keys passen
-# (siehe Einrichtung), sonst lehnt Google die Anfrage ab, obwohl der Key
-# gültig ist.
-REQUEST_HEADERS = {"Referer": "https://samirpro15.github.io/"}
 
 NEARBY_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 PHOTO_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo"
@@ -69,7 +69,10 @@ def haversine_km(lat1, lng1, lat2, lng2) -> float:
 
 
 def photo_url(photo_reference: str, maxwidth: int = 480) -> str:
-    return f"{PHOTO_BASE_URL}?maxwidth={maxwidth}&photoreference={photo_reference}&key={API_KEY}"
+    # Fürs Foto-Laden im Browser wird bewusst der website-eingeschränkte
+    # Key verwendet (BROWSER_API_KEY), NICHT der unrestricted Server-Key,
+    # da dieser öffentlich in sights.json sichtbar sein wird.
+    return f"{PHOTO_BASE_URL}?maxwidth={maxwidth}&photoreference={photo_reference}&key={BROWSER_API_KEY}"
 
 
 def fetch_places_for_type(lat: float, lng: float, place_type: str) -> list[dict]:
@@ -79,7 +82,7 @@ def fetch_places_for_type(lat: float, lng: float, place_type: str) -> list[dict]
         "type": place_type,
         "key": API_KEY,
     }
-    resp = requests.get(NEARBY_URL, params=params, headers=REQUEST_HEADERS, timeout=20)
+    resp = requests.get(NEARBY_URL, params=params, timeout=20)
     resp.raise_for_status()
     data = resp.json()
     status = data.get("status")
