@@ -3,7 +3,7 @@
 // ist und offline zumindest ihr Grundgerüst anzeigt. status.json wird
 // bewusst NICHT gecacht, damit immer der aktuelle Stand angezeigt wird.
 
-const CACHE_NAME = 'terminradar-shell-v5';
+const CACHE_NAME = 'terminradar-shell-v7';
 const SHELL_FILES = [
   './',
   './index.html',
