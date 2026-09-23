@@ -165,7 +165,7 @@
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Anmeldung bei Zuzug aus dem Ausland": {
@@ -179,35 +179,35 @@
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Beantragung eID-Karte für Unionsbürger": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Personalausweis": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Reisepass": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Ummeldung innerhalb von Oldenburg": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Vorläufige Dokumente": {
@@ -221,7 +221,7 @@
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Ausfuhrkennzeichen (Export)": {
@@ -249,14 +249,14 @@
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Kurzzeitkennzeichen": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Großkunde / Händler": {
@@ -276,14 +276,14 @@
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Verlust/Diebstahl Kennzeichen": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Anmeldung/Umschreibung - finanzierte o. geleaste Fahrzeuge": {
@@ -296,39 +296,39 @@
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Führungszeugnis": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Gewerbezentralregister": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Melde-/Haushalts-/Lebens-Bescheinigung": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         },
         "Sonstiges (Auskünfte, Steuer-ID, Untersuchungsberechtigungsschein)": {
           "status": "ok",
           "available": [
             "06.10.2026, 12:00 Uhr",
-            "23.09.2026, 08:00 Uhr"
+            "23.09.2026, 09:45 Uhr"
           ]
         }
       }
     }
   },
-  "last_checked": "2026-09-22T22:05:34.856051+00:00"
+  "last_checked": "2026-09-23T00:28:26.168002+00:00"
 }
