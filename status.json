@@ -171,7 +171,7 @@
         "Anmeldung bei Zuzug aus dem Ausland": {
           "status": "ok",
           "available": [
-            "19.10.2026, 08:15 Uhr",
+            "19.10.2026, 12:00 Uhr",
             "21.10.2026, 12:00 Uhr"
           ]
         },
@@ -213,7 +213,7 @@
         "Vorläufige Dokumente": {
           "status": "ok",
           "available": [
-            "19.10.2026, 08:15 Uhr",
+            "19.10.2026, 12:00 Uhr",
             "21.10.2026, 12:00 Uhr"
           ]
         },
@@ -227,21 +227,21 @@
         "Ausfuhrkennzeichen (Export)": {
           "status": "ok",
           "available": [
-            "19.10.2026, 08:15 Uhr",
+            "19.10.2026, 12:00 Uhr",
             "21.10.2026, 12:00 Uhr"
           ]
         },
         "Import / Oldtimer / Wohnmobile": {
           "status": "ok",
           "available": [
-            "19.10.2026, 08:15 Uhr",
+            "19.10.2026, 12:00 Uhr",
             "21.10.2026, 12:00 Uhr"
           ]
         },
         "Kfz-Anmeldung/ Umschreibung": {
           "status": "ok",
           "available": [
-            "19.10.2026, 08:15 Uhr",
+            "19.10.2026, 12:00 Uhr",
             "21.10.2026, 12:00 Uhr"
           ]
         },
@@ -262,7 +262,7 @@
         "Großkunde / Händler": {
           "status": "ok",
           "available": [
-            "19.10.2026, 13:15 Uhr",
+            "19.10.2026, 12:00 Uhr",
             "21.10.2026, 12:00 Uhr"
           ]
         },
@@ -330,5 +330,5 @@
       }
     }
   },
-  "last_checked": "2026-10-09T16:24:33.770472+00:00"
+  "last_checked": "2026-10-09T21:04:09.350314+00:00"
 }
