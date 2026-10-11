@@ -1,0 +1,16 @@
+{
+  "name": "Terminradar Großenkneten & Umgebung",
+  "short_name": "Terminradar",
+  "description": "Freie Behördentermine in Großenkneten, Wildeshausen und Oldenburg auf einen Blick – plus Orte in deiner Nähe.",
+  "lang": "de",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6faff",
+  "theme_color": "#0759cf",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
