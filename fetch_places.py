@@ -24,8 +24,8 @@ KEEP = {"name", "brand", "operator", "amenity", "shop", "office", "leisure", "to
         "natural", "healthcare", "cuisine", "opening_hours", "website", "contact:website",
         "addr:street", "addr:housenumber", "addr:city", "addr:town", "addr:village", "addr:postcode"}
 KEY = os.environ.get("GOOGLE_PLACES_API_KEY", "")
-PHOTO_LOOKUPS_PER_RUN = 40   # begrenzt die Google-Kosten
-PHOTO_TOP = 80               # nur die naechsten Orte pro Stadt bekommen ein Foto
+PHOTO_LOOKUPS_PER_RUN = 120  # begrenzt die Google-Kosten
+PHOTO_TOP = 100              # nur die naechsten Orte pro Stadt bekommen ein Foto
 
 
 def query(lat, lng):
