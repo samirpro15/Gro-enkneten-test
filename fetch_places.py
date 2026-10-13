@@ -64,7 +64,8 @@ def dist(a, b, c, d):
 def photo_name(name, lat, lng):
     r = requests.post(
         "https://places.googleapis.com/v1/places:searchText",
-        headers={"Content-Type": "application/json", "X-Goog-Api-Key": KEY, "X-Goog-FieldMask": "places.photos"},
+        headers={"Content-Type": "application/json", "X-Goog-Api-Key": KEY, "X-Goog-FieldMask": "places.photos",
+                 "Referer": "https://ortslotse.de/"},
         json={"textQuery": name, "maxResultCount": 1,
               "locationBias": {"circle": {"center": {"latitude": lat, "longitude": lng}, "radius": 300}}},
         timeout=20,
