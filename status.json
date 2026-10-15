@@ -164,7 +164,7 @@
         "Abmeldung des Wohnsitzes": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
@@ -178,35 +178,35 @@
         "Anmeldung bei Zuzug aus dem Inland": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Beantragung eID-Karte für Unionsbürger": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Personalausweis": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Reisepass": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Ummeldung innerhalb von Oldenburg": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
@@ -220,7 +220,7 @@
         "Änderungen (Kfz)": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
@@ -248,14 +248,14 @@
         "Kfz-Abmeldung": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Kurzzeitkennzeichen": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
@@ -275,14 +275,14 @@
         "Verlust Zulassungsbescheinigung Teil I (Fahrzeugschein)": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Verlust/Diebstahl Kennzeichen": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
@@ -295,40 +295,40 @@
         "Amtliche Beglaubigungen": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Führungszeugnis": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Gewerbezentralregister": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Melde-/Haushalts-/Lebens-Bescheinigung": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         },
         "Sonstiges (Auskünfte, Steuer-ID, Untersuchungsberechtigungsschein)": {
           "status": "ok",
           "available": [
-            "19.10.2026, 09:30 Uhr",
+            "15.10.2026, 09:45 Uhr",
             "23.10.2026, 08:00 Uhr"
           ]
         }
       }
     }
   },
-  "last_checked": "2026-10-14T22:37:11.120261+00:00"
+  "last_checked": "2026-10-15T00:50:56.665853+00:00"
 }
