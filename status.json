@@ -14,7 +14,7 @@
     "wildeshausen": {
       "label": "Wildeshausen",
       "url": "https://onlinetermine.wildeshausen.de/select2?md=1",
-      "status": "ok",
+      "status": "error",
       "concerns": {
         "Anmeldung aus dem Inland": {
           "status": "ok",
@@ -154,12 +154,13 @@
             "23.10.2026, 09:45 Uhr"
           ]
         }
-      }
+      },
+      "message": "503 Server Error: Service Unavailable for url: https://onlinetermine.wildeshausen.de/select2?md=1"
     },
     "oldenburg": {
       "label": "Oldenburg",
       "url": "https://terminvereinbarung.oldenburg.de/select2?md=1",
-      "status": "ok",
+      "status": "error",
       "concerns": {
         "Abmeldung des Wohnsitzes": {
           "status": "ok",
@@ -327,8 +328,9 @@
             "28.10.2026, 08:00 Uhr"
           ]
         }
-      }
+      },
+      "message": "503 Server Error: Service Unavailable for url: https://terminvereinbarung.oldenburg.de/select2?md=1"
     }
   },
-  "last_checked": "2026-10-21T10:26:27.661158+00:00"
+  "last_checked": "2026-10-21T15:26:49.358551+00:00"
 }
