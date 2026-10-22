@@ -155,7 +155,7 @@
           ]
         }
       },
-      "message": "503 Server Error: Service Unavailable for url: https://onlinetermine.wildeshausen.de/select2?md=1"
+      "message": "404 Client Error: Not Found for url: https://onlinetermine.wildeshausen.de/select2?md=1"
     },
     "oldenburg": {
       "label": "Oldenburg",
@@ -329,8 +329,8 @@
           ]
         }
       },
-      "message": "503 Server Error: Service Unavailable for url: https://terminvereinbarung.oldenburg.de/select2?md=1"
+      "message": "404 Client Error: Not Found for url: https://terminvereinbarung.oldenburg.de/select2?md=1"
     }
   },
-  "last_checked": "2026-10-22T05:33:12.135222+00:00"
+  "last_checked": "2026-10-22T10:37:20.387764+00:00"
 }
