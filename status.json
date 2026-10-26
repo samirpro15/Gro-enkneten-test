@@ -172,7 +172,7 @@
           "status": "ok",
           "available": [
             "03.11.2026, 10:30 Uhr",
-            "29.10.2026, 11:15 Uhr"
+            "26.10.2026, 08:00 Uhr"
           ]
         },
         "Anmeldung bei Zuzug aus dem Inland": {
@@ -214,7 +214,7 @@
           "status": "ok",
           "available": [
             "03.11.2026, 10:30 Uhr",
-            "29.10.2026, 11:15 Uhr"
+            "26.10.2026, 08:00 Uhr"
           ]
         },
         "Änderungen (Kfz)": {
@@ -228,21 +228,21 @@
           "status": "ok",
           "available": [
             "03.11.2026, 10:30 Uhr",
-            "29.10.2026, 11:15 Uhr"
+            "26.10.2026, 08:00 Uhr"
           ]
         },
         "Import / Oldtimer / Wohnmobile": {
           "status": "ok",
           "available": [
             "03.11.2026, 10:30 Uhr",
-            "29.10.2026, 11:15 Uhr"
+            "26.10.2026, 08:00 Uhr"
           ]
         },
         "Kfz-Anmeldung/ Umschreibung": {
           "status": "ok",
           "available": [
             "03.11.2026, 10:30 Uhr",
-            "29.10.2026, 11:15 Uhr"
+            "26.10.2026, 08:00 Uhr"
           ]
         },
         "Kfz-Abmeldung": {
@@ -330,5 +330,5 @@
       }
     }
   },
-  "last_checked": "2026-10-25T23:24:50.483253+00:00"
+  "last_checked": "2026-10-26T01:24:33.696319+00:00"
 }
