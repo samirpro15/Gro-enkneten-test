@@ -19,7 +19,7 @@
         "Anmeldung aus dem Inland": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "02.11.2026, 09:30 Uhr"
           ]
         },
         "Anmeldung aus dem Ausland": {
@@ -31,127 +31,127 @@
         "Ummeldung": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Abmeldung": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Meldebescheinigung": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Erweiterte Meldebescheinigung": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Haushaltsbescheinigung (Kindergeld)": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Lebendbescheinigung (Rente)": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Personalausweis beantragen": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "02.11.2026, 09:30 Uhr"
           ]
         },
         "Reisepass beantragen": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "02.11.2026, 09:30 Uhr"
           ]
         },
         "Abholung Personalausweis/Reisepass": {
           "status": "ok",
           "available": [
-            "30.10.2026, 10:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "ONLINE Funktion aktivieren / PIN neu setzen": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Wohnortänderung im Reisepass": {
           "status": "ok",
           "available": [
-            "30.10.2026, 10:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Befreiung von der Ausweispflicht": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "02.11.2026, 09:30 Uhr"
           ]
         },
         "Steueridentifikationsnummer": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Führungszeugnis": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Erweitertes Führungszeugnis": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Auszug aus dem Gewerbezentralregister": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Untersuchungsberechtigungsschein": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Auskunft aus dem Melderegister (Privat)": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Auskunft aus dem Melderegister (Gewerblich)": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Internationale Eheurkunde einreichen (oder anderen standesamtlichen Nachweis)": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         },
         "Beglaubigung": {
           "status": "ok",
           "available": [
-            "30.10.2026, 12:00 Uhr"
+            "30.10.2026, 09:30 Uhr"
           ]
         }
       }
@@ -171,7 +171,7 @@
         "Anmeldung bei Zuzug aus dem Ausland": {
           "status": "ok",
           "available": [
-            "04.11.2026, 11:00 Uhr",
+            "04.11.2026, 11:15 Uhr",
             "10.11.2026, 08:30 Uhr"
           ]
         },
@@ -213,7 +213,7 @@
         "Vorläufige Dokumente": {
           "status": "ok",
           "available": [
-            "04.11.2026, 11:00 Uhr",
+            "04.11.2026, 11:15 Uhr",
             "10.11.2026, 08:30 Uhr"
           ]
         },
@@ -227,21 +227,21 @@
         "Ausfuhrkennzeichen (Export)": {
           "status": "ok",
           "available": [
-            "04.11.2026, 11:00 Uhr",
+            "04.11.2026, 11:15 Uhr",
             "10.11.2026, 08:30 Uhr"
           ]
         },
         "Import / Oldtimer / Wohnmobile": {
           "status": "ok",
           "available": [
-            "04.11.2026, 11:00 Uhr",
+            "04.11.2026, 11:15 Uhr",
             "10.11.2026, 08:30 Uhr"
           ]
         },
         "Kfz-Anmeldung/ Umschreibung": {
           "status": "ok",
           "available": [
-            "04.11.2026, 11:00 Uhr",
+            "04.11.2026, 11:15 Uhr",
             "10.11.2026, 08:30 Uhr"
           ]
         },
@@ -262,7 +262,7 @@
         "Großkunde / Händler": {
           "status": "ok",
           "available": [
-            "04.11.2026, 11:00 Uhr",
+            "04.11.2026, 11:15 Uhr",
             "10.11.2026, 10:30 Uhr"
           ]
         },
@@ -330,5 +330,5 @@
       }
     }
   },
-  "last_checked": "2026-10-29T21:04:09.687426+00:00"
+  "last_checked": "2026-10-30T00:54:42.103952+00:00"
 }
