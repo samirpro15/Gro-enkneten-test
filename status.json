@@ -14,7 +14,7 @@
     "wildeshausen": {
       "label": "Wildeshausen",
       "url": "https://onlinetermine.wildeshausen.de/select2?md=1",
-      "status": "ok",
+      "status": "error",
       "concerns": {
         "Anmeldung aus dem Inland": {
           "status": "ok",
@@ -154,12 +154,13 @@
             "02.11.2026, 09:30 Uhr"
           ]
         }
-      }
+      },
+      "message": "HTTPSConnectionPool(host='onlinetermine.wildeshausen.de', port=443): Read timed out. (read timeout=30)"
     },
     "oldenburg": {
       "label": "Oldenburg",
       "url": "https://terminvereinbarung.oldenburg.de/select2?md=1",
-      "status": "ok",
+      "status": "error",
       "concerns": {
         "Abmeldung des Wohnsitzes": {
           "status": "ok",
@@ -327,8 +328,9 @@
             "11.11.2026, 12:30 Uhr"
           ]
         }
-      }
+      },
+      "message": "HTTPSConnectionPool(host='terminvereinbarung.oldenburg.de', port=443): Read timed out. (read timeout=30)"
     }
   },
-  "last_checked": "2026-11-01T21:28:49.875772+00:00"
+  "last_checked": "2026-11-02T00:58:24.391520+00:00"
 }
