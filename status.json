@@ -165,84 +165,84 @@
         "Abmeldung des Wohnsitzes": {
           "status": "ok",
           "available": [
-            "09.11.2026, 11:45 Uhr",
+            "10.11.2026, 08:45 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Anmeldung bei Zuzug aus dem Ausland": {
           "status": "ok",
           "available": [
-            "10.11.2026, 11:15 Uhr",
+            "11.11.2026, 08:00 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Anmeldung bei Zuzug aus dem Inland": {
           "status": "ok",
           "available": [
-            "09.11.2026, 11:45 Uhr",
+            "10.11.2026, 08:45 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Beantragung eID-Karte für Unionsbürger": {
           "status": "ok",
           "available": [
-            "09.11.2026, 11:45 Uhr",
+            "10.11.2026, 08:45 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Personalausweis": {
           "status": "ok",
           "available": [
-            "09.11.2026, 11:45 Uhr",
+            "10.11.2026, 08:45 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Reisepass": {
           "status": "ok",
           "available": [
-            "09.11.2026, 11:45 Uhr",
+            "10.11.2026, 08:45 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Ummeldung innerhalb von Oldenburg": {
           "status": "ok",
           "available": [
-            "09.11.2026, 11:45 Uhr",
+            "10.11.2026, 08:45 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Vorläufige Dokumente": {
           "status": "ok",
           "available": [
-            "10.11.2026, 11:15 Uhr",
+            "11.11.2026, 08:00 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Änderungen (Kfz)": {
           "status": "ok",
           "available": [
-            "09.11.2026, 11:45 Uhr",
+            "10.11.2026, 08:45 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Ausfuhrkennzeichen (Export)": {
           "status": "ok",
           "available": [
-            "10.11.2026, 11:15 Uhr",
+            "11.11.2026, 08:00 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Import / Oldtimer / Wohnmobile": {
           "status": "ok",
           "available": [
-            "10.11.2026, 11:15 Uhr",
+            "11.11.2026, 08:00 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
         "Kfz-Anmeldung/ Umschreibung": {
           "status": "ok",
           "available": [
-            "10.11.2026, 11:15 Uhr",
+            "11.11.2026, 08:00 Uhr",
             "17.11.2026, 08:00 Uhr"
           ]
         },
@@ -331,5 +331,5 @@
       }
     }
   },
-  "last_checked": "2026-11-04T20:52:19.245578+00:00"
+  "last_checked": "2026-11-05T01:08:03.571064+00:00"
 }
