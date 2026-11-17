@@ -19,139 +19,139 @@
         "Anmeldung aus dem Inland": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Anmeldung aus dem Ausland": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 10:40 Uhr"
           ]
         },
         "Ummeldung": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Abmeldung": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Meldebescheinigung": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Erweiterte Meldebescheinigung": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Haushaltsbescheinigung (Kindergeld)": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Lebendbescheinigung (Rente)": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Personalausweis beantragen": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Reisepass beantragen": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Abholung Personalausweis/Reisepass": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "ONLINE Funktion aktivieren / PIN neu setzen": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Wohnortänderung im Reisepass": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Befreiung von der Ausweispflicht": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Steueridentifikationsnummer": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Führungszeugnis": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Erweitertes Führungszeugnis": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Auszug aus dem Gewerbezentralregister": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Untersuchungsberechtigungsschein": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Auskunft aus dem Melderegister (Privat)": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Auskunft aus dem Melderegister (Gewerblich)": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Internationale Eheurkunde einreichen (oder anderen standesamtlichen Nachweis)": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         },
         "Beglaubigung": {
           "status": "ok",
           "available": [
-            "17.11.2026, 10:10 Uhr"
+            "17.11.2026, 09:15 Uhr"
           ]
         }
       }
@@ -171,7 +171,7 @@
         "Anmeldung bei Zuzug aus dem Ausland": {
           "status": "ok",
           "available": [
-            "19.11.2026, 11:30 Uhr",
+            "17.11.2026, 08:15 Uhr",
             "25.11.2026, 11:30 Uhr"
           ]
         },
@@ -213,7 +213,7 @@
         "Vorläufige Dokumente": {
           "status": "ok",
           "available": [
-            "19.11.2026, 11:30 Uhr",
+            "17.11.2026, 08:15 Uhr",
             "25.11.2026, 11:30 Uhr"
           ]
         },
@@ -227,21 +227,21 @@
         "Ausfuhrkennzeichen (Export)": {
           "status": "ok",
           "available": [
-            "19.11.2026, 11:30 Uhr",
+            "17.11.2026, 08:15 Uhr",
             "25.11.2026, 11:30 Uhr"
           ]
         },
         "Import / Oldtimer / Wohnmobile": {
           "status": "ok",
           "available": [
-            "19.11.2026, 11:30 Uhr",
+            "17.11.2026, 08:15 Uhr",
             "25.11.2026, 11:30 Uhr"
           ]
         },
         "Kfz-Anmeldung/ Umschreibung": {
           "status": "ok",
           "available": [
-            "19.11.2026, 11:30 Uhr",
+            "17.11.2026, 08:15 Uhr",
             "25.11.2026, 11:30 Uhr"
           ]
         },
@@ -262,7 +262,7 @@
         "Großkunde / Händler": {
           "status": "ok",
           "available": [
-            "23.11.2026, 08:00 Uhr",
+            "20.11.2026, 09:15 Uhr",
             "25.11.2026, 11:30 Uhr"
           ]
         },
@@ -330,5 +330,5 @@
       }
     }
   },
-  "last_checked": "2026-11-16T19:17:51.160831+00:00"
+  "last_checked": "2026-11-17T02:32:21.357777+00:00"
 }
