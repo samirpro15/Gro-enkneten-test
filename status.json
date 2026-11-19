@@ -25,7 +25,7 @@
         "Anmeldung aus dem Ausland": {
           "status": "ok",
           "available": [
-            "19.11.2026, 15:00 Uhr"
+            "20.11.2026, 10:40 Uhr"
           ]
         },
         "Ummeldung": {
@@ -171,7 +171,7 @@
         "Anmeldung bei Zuzug aus dem Ausland": {
           "status": "ok",
           "available": [
-            "23.11.2026, 11:45 Uhr",
+            "24.11.2026, 09:15 Uhr",
             "30.11.2026, 08:00 Uhr"
           ]
         },
@@ -213,7 +213,7 @@
         "Vorläufige Dokumente": {
           "status": "ok",
           "available": [
-            "23.11.2026, 11:45 Uhr",
+            "24.11.2026, 09:15 Uhr",
             "30.11.2026, 08:00 Uhr"
           ]
         },
@@ -227,21 +227,21 @@
         "Ausfuhrkennzeichen (Export)": {
           "status": "ok",
           "available": [
-            "23.11.2026, 11:45 Uhr",
+            "24.11.2026, 09:15 Uhr",
             "30.11.2026, 08:00 Uhr"
           ]
         },
         "Import / Oldtimer / Wohnmobile": {
           "status": "ok",
           "available": [
-            "23.11.2026, 11:45 Uhr",
+            "24.11.2026, 09:15 Uhr",
             "30.11.2026, 08:00 Uhr"
           ]
         },
         "Kfz-Anmeldung/ Umschreibung": {
           "status": "ok",
           "available": [
-            "23.11.2026, 11:45 Uhr",
+            "24.11.2026, 09:15 Uhr",
             "30.11.2026, 08:00 Uhr"
           ]
         },
@@ -263,7 +263,7 @@
           "status": "ok",
           "available": [
             "24.11.2026, 09:15 Uhr",
-            "30.11.2026, 08:00 Uhr"
+            "30.11.2026, 10:00 Uhr"
           ]
         },
         "Verlust Zulassungsbescheinigung Teil II (Fahrzeugbrief)": {
@@ -330,5 +330,5 @@
       }
     }
   },
-  "last_checked": "2026-11-18T18:15:14.520097+00:00"
+  "last_checked": "2026-11-19T00:23:02.568750+00:00"
 }
